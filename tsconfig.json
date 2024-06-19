@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "esModuleInterop": true,
+        "target": "es6",
+        "moduleResolution": "node",
+        "declaration": true,
+        "noEmit": true,
+        "outDir": "dist"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"],
+    "compileOnSave": true
+  }

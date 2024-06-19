@@ -1,0 +1,27 @@
+{
+  "name": "sprite-configurator",
+  "description": "Package to facilitate communication between designers and developers",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "url": "https://github.com/TomC333/Sprite-Configurator"
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "pixi.js",
+    "sprites",
+    "sprite-configurato",
+    "assets",
+    "assets-replacement"
+  ],
+  "author": "TomC333",
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.5"
+  }
+}
