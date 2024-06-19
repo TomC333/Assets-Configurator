@@ -1,8 +1,6 @@
-import { Hello } from "./test";
-
 /**
- * function creates new instance of that class
+ * function just logs hello world
  */
 export function HelloWorld() {
-    const hello = new Hello();
+    console.log("Hello World")
 }
