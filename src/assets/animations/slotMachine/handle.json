@@ -1,0 +1,99 @@
+﻿{"frames": {
+
+"handle0000":
+{
+	"frame": {"x":0,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0001":
+{
+	"frame": {"x":70,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0002":
+{
+	"frame": {"x":140,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0003":
+{
+	"frame": {"x":210,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0004":
+{
+	"frame": {"x":280,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0005":
+{
+	"frame": {"x":350,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0006":
+{
+	"frame": {"x":420,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0007":
+{
+	"frame": {"x":490,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0008":
+{
+	"frame": {"x":560,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0009":
+{
+	"frame": {"x":630,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+},
+"handle0010":
+{
+	"frame": {"x":700,"y":0,"w":70,"h":220},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":220},
+	"sourceSize": {"w":70,"h":220}
+}},
+"meta": {
+	"app": "Adobe Animate",
+	"version": "24.0.2.12",
+	"image": "handle.png",
+	"format": "RGBA8888",
+	"size": {"w":770,"h":220},
+	"scale": "1"
+}
+}

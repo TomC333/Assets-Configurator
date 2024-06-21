@@ -1,7 +1,7 @@
 {
   "name": "assets-configurator",
   "description": "Package to facilitate communication between designers and developers",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -14,7 +14,7 @@
   "keywords": [
     "pixi.js",
     "assets",
-    "assets-configurato",
+    "assets-configurator",
     "assets-replacement"
   ],
   "author": "TomC333",
