@@ -20,6 +20,8 @@
   "author": "TomC333",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.14.8",
+    "rollup-plugin-copy": "^3.5.0",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5"
   }

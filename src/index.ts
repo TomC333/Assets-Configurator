@@ -1,1 +1,0 @@
-export { AssetsPathGenerator } from "./generators/assetsPathGenerator";
