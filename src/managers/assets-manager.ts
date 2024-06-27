@@ -1,6 +1,7 @@
+import { ClickActions } from "../utils/enums";
 import { Extenstions } from "../utils/extensions";
 import { Globals} from "../utils/globals";
-import { CacheAsset } from "../utils/types";
+import { ActionHandler, CacheAsset } from "../utils/types";
 import { CacheManager } from "./cache-manager";
 import { ComponentsManager } from "./components-manager";
 import { ProfilesManager } from "./profiles-manager";
@@ -13,6 +14,20 @@ export class AssetsManager{
     private _components_manager: ComponentsManager;
     private _profiles_manager!: ProfilesManager;
     private _cache_manager: CacheManager;
+
+    
+    private _action_handlers: Record<ClickActions, ActionHandler<any>> = {
+        [ClickActions.CREATE_NEW_PROFILE]: (profile_name: string) => {
+            console.log('Handling CREATE_NEW_PROFILE action... ', profile_name);
+        },
+        [ClickActions.SWITCH_PROFILE]: (profile_name: string) => {
+            console.log('Handling SWITCH_PROFILE action...  ', profile_name);
+        },
+        [ClickActions.DELETE_PROFILE]: (profile_name: string) => {
+            console.log('Handling DELETE_PROFILE action...  ', profile_name);
+        }
+    };
+
 
     /**
      * Constructs a new instance of ServiceWorkerManager.
@@ -45,7 +60,7 @@ export class AssetsManager{
      * Sets the active profile, updates the service worker, and updates the component view accordingly.
      * @param profile_name The name of the profile to set as active.
      */
-    private set_active_profile(profile_name: string){
+    private set_active_profile(profile_name: string): void{
         if(!this._profiles_manager.contains(profile_name)){
             console.error("There is no such profile");
             return;
@@ -91,11 +106,22 @@ export class AssetsManager{
         this.set_active_profile(Globals.DEFAULT_PROFILE_NAME);
     }
 
+    
     /**
-     * tmp function for testing purpose 
-     * @param profile_name 
+     * Executes the appropriate handler function for a given action based on ClickActions enum.
+     * Throws an error if the action is not handled.
+     * 
+     * @param {ClickActions} action The action to perform, represented by a value from the ClickActions enum.
+     * @param {...any} args Arguments to pass to the handler function associated with the action.
+     * @logs an error if the action is not handled by any registered handler.
      */
-    on_profile_click(profile_name: string) {
-        this.set_active_profile(profile_name);
+    on_click(action: ClickActions, ...args: Parameters<ActionHandler<any>>): void {
+        const handler = this._action_handlers[action];
+
+        if(handler){
+            handler(...args);
+        }else{
+            console.error(`Click event is not handled for ACTION = ${action}`);
+        }
     }
 }
