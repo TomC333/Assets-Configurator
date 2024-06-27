@@ -4,9 +4,9 @@ export class ProfilesManager{
     private _profiles: Map<string, Profile>;
 
     /**
-    * Constructs a new ProfilesManager instance with an initial set of profile names.
-    * @param profileNames An array of profile names to initialize the manager with.
-    */
+     * Constructs a new ProfilesManager instance with an initial set of profile names.
+     * @param profileNames An array of profile names to initialize the manager with.
+     */
     constructor(profileNames: string[]) {
         this._profiles = new Map();
 
@@ -14,9 +14,9 @@ export class ProfilesManager{
     }
 
     /**
-    * Initializes profiles in the manager based on an array of profile names.
-    * @param profiles An array of profile names to initialize as profiles.
-    */
+     * Initializes profiles in the manager based on an array of profile names.
+     * @param profiles An array of profile names to initialize as profiles.
+     */
     private initProfiles(profiles: string[]): void{
         profiles.forEach(profile => 
             {

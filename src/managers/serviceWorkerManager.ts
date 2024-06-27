@@ -9,25 +9,28 @@ export class ServiceWorkerManager {
      * If a service worker is already registered, it first unregisters the existing one.
      * @param serviceWorkerRequestURL The URL of the service worker script to register.
      * @returns A Promise that resolves once the service worker is successfully registered.
-     */
-    registerServiceWorker(serviceWorkerRequestURL: string): any{
-        if("serviceWorker" in navigator){
-            navigator.serviceWorker.getRegistration().then(existingRegistration => 
-                {
-                    if(existingRegistration){
-                        return existingRegistration.unregister();
-                    }
+     */ 
+    async registerServiceWorker(serviceWorkerRequestURL: string): Promise<void> {
+        try {
+            if ("serviceWorker" in navigator) {
+                const existingRegistration = await navigator.serviceWorker.getRegistration("/");
+                
+                if (existingRegistration) {
+                    await existingRegistration.unregister();
                 }
-            ).then(() => 
-                {
-                return navigator.serviceWorker.register(serviceWorkerRequestURL, {scope: "/"});
+
+                const existingRegistration2 = await navigator.serviceWorker.getRegistration("/");
+                
+                if (existingRegistration2) {
+                    await existingRegistration2.unregister();
                 }
-            ).then(() => {
-            }).catch(error => {
-                console.error(error);
-            });
-        }else{
-            console.warn("Service workers are not supported");
-        }        
+
+                await navigator.serviceWorker.register(serviceWorkerRequestURL, { scope: "/" });
+            } else {
+                console.warn("Service workers are not supported");
+            }
+        } catch (error) {
+            console.error("Error in registering service worker:", error);
+        }
     }
 }

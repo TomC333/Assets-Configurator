@@ -1,7 +1,8 @@
-import { Extenstions } from "./extensions";
+export class Globals{
+    static  DEFAULT_CACHE_PREFIX = "next-level-";
+    static  DEFAULT_CACHE_SUFFIX = "-cache";
 
-export const DEFAULT_CACHE_PREFIX = "next-level-";
-export const DEFAULT_CACHE_SUFFIX = "-cache";
+    static  DEFAULT_PROFILE_NAME = "default";
+    static  DEFAULT_CACHE_NAME = Globals.DEFAULT_CACHE_PREFIX + Globals.DEFAULT_PROFILE_NAME + Globals.DEFAULT_CACHE_SUFFIX; 
+}
 
-export const DEFAULT_PROFILE_NAME = "default";
-export const DEFAULT_CACHE_NAME = Extenstions.profileNameToCacheName(DEFAULT_PROFILE_NAME);
