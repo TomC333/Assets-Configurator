@@ -5,19 +5,19 @@ export class ProfilesManager{
 
     /**
      * Constructs a new ProfilesManager instance with an initial set of profile names.
-     * @param profileNames An array of profile names to initialize the manager with.
+     * @param profile_names An array of profile names to initialize the manager with.
      */
-    constructor(profileNames: string[]) {
+    constructor(profile_names: string[]) {
         this._profiles = new Map();
 
-        this.initProfiles(profileNames);
+        this.init_profiles(profile_names);
     }
 
     /**
      * Initializes profiles in the manager based on an array of profile names.
      * @param profiles An array of profile names to initialize as profiles.
      */
-    private initProfiles(profiles: string[]): void{
+    private init_profiles(profiles: string[]): void{
         profiles.forEach(profile => 
             {
                 this._profiles.set(profile, new Profile(profile));
@@ -29,16 +29,16 @@ export class ProfilesManager{
      * Retrieves an array of all profiles managed by the ProfilesManager.
      * @returns An array containing all profiles managed by the manager.
      */
-    getProfiles(): Profile[] {
+    get_profiles(): Profile[] {
         return Object.values(this._profiles);
     }
 
     /**
      * Checks if a profile with the given profileName exists in the ProfilesManager.
-     * @param profileName The name of the profile to check for existence.
+     * @param profile_name The name of the profile to check for existence.
      * @returns `true` if the profile exists in the manager, otherwise `false`.
      */
-    contains(profileName: string): boolean {
-        return this._profiles.get(profileName) !== undefined;
+    contains(profile_name: string): boolean {
+        return this._profiles.get(profile_name) !== undefined;
     }
 }

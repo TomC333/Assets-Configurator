@@ -12,7 +12,7 @@ export class CacheManager{
      * @returns A Promise that resolves with an array of cache names available in the Cache API,
      *          or resolves with an empty array if the Cache API is not supported.
      */
-    async getAllCacheNames(): Promise<string[]> {
+    async get_all_cache_names(): Promise<string[]> {
         if (!('caches' in window)) {
             console.error('Cache API is not supported');
             return [];
@@ -32,65 +32,65 @@ export class CacheManager{
      * Retrieves unique key-value pairs from specified caches.
      * Keys existing in both caches will have their value taken from the second cache.
      * 
-     * @param defaultCache The name of the default cache.
-     * @param overrideCache The name of the override cache.
-     * @returns A promise that resolves with an array of unique key-value pairs from both caches.
+     * @param default_cache The name of the default cache.
+     * @param override_cache The name of the override cache.
+     * @returns A promise that resolves with an array of unique key-value pairs from both caches.     
      *          If either cache does not exist or cannot be accessed, resolves with an empty array.
      */
-    async getUniqueCacheKeyValuePairs(defaultCache: string, overrideCache: string): Promise<any[]> {
+    async get_unique_cache_key_value_pairs(default_cache: string, override_cache: string): Promise<any[]> {
         if (!('caches' in window)) {
             console.error('Cache API is not supported');
             return [];
         }
 
         try {
-            const cache1 = await caches.open(defaultCache);
-            const cache2 = await caches.open(overrideCache);
+            const cache1 = await caches.open(default_cache);
+            const cache2 = await caches.open(override_cache);
 
-            const cache1Keys = await cache1.keys();
-            const cache2Keys = await cache2.keys();
+            const cache1_keys = await cache1.keys();
+            const cache2_keys = await cache2.keys();
 
-            const uniqueKeys = new Set<string>();
+            const unique_keys = new Set<string>();
 
-            cache1Keys.forEach(request => uniqueKeys.add(request.url));
-            cache2Keys.forEach(request => uniqueKeys.add(request.url));
+            cache1_keys.forEach(request => unique_keys.add(request.url));
+            cache2_keys.forEach(request => unique_keys.add(request.url));
 
-            const uniqueKeyArray = Array.from(uniqueKeys);
+            const unique_key_array = Array.from(unique_keys);
 
-            const keyValuePairs = await Promise.all(uniqueKeyArray.map(async (key) => {
-                const responseFromCache2 = await cache2.match(key);
-                const response = responseFromCache2 ?? await cache1.match(key);
+            const key_value_pairs = await Promise.all(unique_key_array.map(async (key) => {
+                const response_from_cache2 = await cache2.match(key);
+                const response = response_from_cache2 ?? await cache1.match(key);
                 
                 if (response) {
                     // Check the content type of the response
-                    const contentType = response.headers.get('Content-Type');
+                    const content_type = response.headers.get('Content-Type');
                     
-                    if (contentType) {
+                    if (content_type) {
                         let type: CacheTypes;
                         let value; 
 
-                        if (contentType.match(/^image\//)) {
+                        if (content_type.match(/^image\//)) {
                             const blob = await response.blob();
 
                             value = URL.createObjectURL(blob);
                             type = CacheTypes.IMAGE;
 
-                        } else if (contentType.match(/^audio\//)) {
+                        } else if (content_type.match(/^audio\//)) {
                             const blob = await response.blob();
                             
                             value = URL.createObjectURL(blob);
                             type = CacheTypes.AUDIO;
 
-                        } else if (contentType.match(/^video\//)) {
+                        } else if (content_type.match(/^video\//)) {
                             const blob = await response.blob();
 
                             value = URL.createObjectURL(blob);
                             type = CacheTypes.VIDEO;
 
-                        } else if (contentType.match(/^application\/json/)) {
+                        } else if (content_type.match(/^application\/json/)) {
                             value = await response.json();
                             type = CacheTypes.JSON;
-                            
+
                         }else{
                             return null;
                         }
@@ -101,9 +101,9 @@ export class CacheManager{
                 return null;
             }));
 
-            const filteredKeyValuePairs = keyValuePairs.filter(pair => pair !== null);
+            const filtered_key_value_pairs = key_value_pairs.filter(pair => pair !== null);
 
-            return filteredKeyValuePairs;
+            return filtered_key_value_pairs;
         } catch (error) {
             console.error('Error retrieving key-value pairs from caches:', error);
             return [];

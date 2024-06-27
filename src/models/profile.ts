@@ -1,14 +1,14 @@
 import { Globals } from "../utils/globals";
 
 export class Profile {
-    private _profileName: string;
+    private _profile_name: string;
 
     /**
      * Creates an instance of Profile.
-     * @param profileName The name of the profile.
+     * @param profile_name The name of the profile.
      */
-    constructor(profileName: string){
-        this._profileName = profileName;
+    constructor(profile_name: string){
+        this._profile_name = profile_name;
     }
     
     /**
@@ -17,6 +17,6 @@ export class Profile {
      * @returns true if the profile can be deleted; false otherwise.
      */
     isDeletable(): boolean{
-        return this._profileName !== Globals.DEFAULT_PROFILE_NAME;
+        return this._profile_name !== Globals.DEFAULT_PROFILE_NAME;
     }
 }
