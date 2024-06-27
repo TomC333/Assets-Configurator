@@ -30,9 +30,8 @@ export class ComponentsManager{
     /**
      * Sets the active profile and updates the displayed assets view accordingly.
      * @param profile The active profile to set.
-     * @param new_view An array of CacheAsset objects representing updated asset information for the active profile.
      */
-    set_active_profile(profile: Profile, new_view: CacheAsset[]): void{
-        this._assets_configurator.set_active_profile(profile, new_view);
+    set_active_profile(profile: Profile): void{
+        this._assets_configurator.set_active_profile(profile, profile.get_cache_data());
     }
 }

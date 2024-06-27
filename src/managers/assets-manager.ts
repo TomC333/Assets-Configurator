@@ -1,3 +1,4 @@
+import { profile } from "console";
 import { ClickActions } from "../utils/enums";
 import { Extenstions } from "../utils/extensions";
 import { Globals} from "../utils/globals";
@@ -91,7 +92,8 @@ export class AssetsManager{
      */
     private set_active_profile_to_components(profile_name: string, cache_name: string): void{
         this._cache_manager.get_unique_cache_key_value_pairs(Globals.DEFAULT_CACHE_NAME, cache_name).then(result => {
-            this._components_manager.set_active_profile(this._profiles_manager.get_profile(profile_name)!, <CacheAsset[]>result);
+            this._profiles_manager.get_profile(profile_name)?.set_cache_data(result);
+            this._components_manager.set_active_profile(this._profiles_manager.get_profile(profile_name)!);
         });
     }
 
