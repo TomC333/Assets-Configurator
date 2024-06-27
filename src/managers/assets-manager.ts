@@ -1,5 +1,6 @@
 import { Extenstions } from "../utils/extensions";
 import { Globals} from "../utils/globals";
+import { CacheAsset } from "../utils/types";
 import { CacheManager } from "./cache-manager";
 import { ComponentsManager } from "./components-manager";
 import { ProfilesManager } from "./profiles-manager";
@@ -75,7 +76,7 @@ export class AssetsManager{
      */
     private set_active_profile_cache_to_components(cache_name: string): void{
         this._cache_manager.get_unique_cache_key_value_pairs(Globals.DEFAULT_CACHE_NAME, cache_name).then(result => {
-            this._components_manager.update_assets_view(result);
+            this._components_manager.update_assets_view(<CacheAsset[]>result);
         });
     }
 
