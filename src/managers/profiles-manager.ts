@@ -26,6 +26,15 @@ export class ProfilesManager{
     }
     
     /**
+     * Retrieves the profile associated with the specified profile name.
+     * @param profile_name The name of the profile to retrieve.
+     * @returns The Profile object associated with the profile name, or undefined if not found.
+     */
+    get_profile(profile_name: string): Profile | undefined { 
+        return this._profiles.get(profile_name);
+    }
+    
+    /**
      * Retrieves an array of all profiles managed by the ProfilesManager.
      * @returns An array containing all profiles managed by the manager.
      */
@@ -34,7 +43,7 @@ export class ProfilesManager{
     }
 
     /**
-     * Checks if a profile with the given profileName exists in the ProfilesManager.
+     * Checks if a profile with the given profilName exists in the ProfilesManager.e
      * @param profile_name The name of the profile to check for existence.
      * @returns `true` if the profile exists in the manager, otherwise `false`.
      */

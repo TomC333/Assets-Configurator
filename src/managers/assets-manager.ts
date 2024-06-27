@@ -47,7 +47,7 @@ export class AssetsManager{
         this._api_endpoint = api_endpoint;
 
         this._service_workers_manager = new ServiceWorkerManager();
-        this._components_manager = new ComponentsManager();
+        this._components_manager = new ComponentsManager(this.on_click.bind(this));
         this._cache_manager = new CacheManager();
 
         this._cache_manager.get_all_cache_names().then(cache_names => {
@@ -70,7 +70,7 @@ export class AssetsManager{
         const url = Extenstions.generate_api_request_url(this._api_endpoint, cache_name);
         
         this.set_active_service_worker(url).then(_ => {
-            this.set_active_profile_cache_to_components(cache_name);
+            this.set_active_profile_to_components(profile_name, cache_name);
         });
     }
 
@@ -84,14 +84,14 @@ export class AssetsManager{
     }
 
     /**
-     * Updates the active profile cache in components.
-     * This function retrieves key-value pairs from a specified cache and updates the assets view accordingly.
-     * 
-     * @param cache_name - The name of the cache from which key-value pairs are retrieved.
+     * Updates the active profile's cached assets in components based on a specified cache.
+     * Retrieves key-value pairs from the specified cache and updates the assets view accordingly.
+     * @param profile_name The name of the profile which should become active.
+     * @param cache_name The name of the cache from which key-value pairs are retrieved.
      */
-    private set_active_profile_cache_to_components(cache_name: string): void{
+    private set_active_profile_to_components(profile_name: string, cache_name: string): void{
         this._cache_manager.get_unique_cache_key_value_pairs(Globals.DEFAULT_CACHE_NAME, cache_name).then(result => {
-            this._components_manager.update_assets_view(<CacheAsset[]>result);
+            this._components_manager.set_active_profile(this._profiles_manager.get_profile(profile_name)!, <CacheAsset[]>result);
         });
     }
 

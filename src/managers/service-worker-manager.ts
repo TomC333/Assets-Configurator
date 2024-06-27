@@ -5,7 +5,7 @@ export class ServiceWorkerManager {
     }
 
     /**
-     * Registers a service worker with the provided serviceWorkerRequestURL.
+     * Registers a service worker with the provided service_worker_request_url.
      * If a service worker is already registered, it first unregisters the existing one.
      * @param service_worker_request_url The URL of the service worker script to register.
      * @returns A Promise that resolves once the service worker is successfully registered.

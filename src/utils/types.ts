@@ -7,9 +7,3 @@ export type CacheAsset = {
     key: string,
     value: any,
 }
-
-export type AssetContainerParameter = {
-    asset: CacheAsset,
-    is_button_enabled: boolean,
-    message_on_disabled_button: string,
-}

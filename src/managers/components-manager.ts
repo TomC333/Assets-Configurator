@@ -1,35 +1,38 @@
-import { AssetContainer } from "../components/asset-container";
+import { AssetsConfigurator } from "../components/assets-configurator";
 import { Profile } from "../models/profile";
-import { CacheAsset } from "../utils/types";
+import { ClickActions } from "../utils/enums";
+import { ActionHandler, CacheAsset } from "../utils/types";
 
 export class ComponentsManager{
-    
-    private _assets_configurator_container: HTMLDivElement;
-    private _assets_container: HTMLDivElement;
 
-    constructor() {
-        this._assets_configurator_container = document.querySelector(".assets-configurator-container") as HTMLDivElement;
-        this._assets_container = this._assets_configurator_container.querySelector(".assets-container") as HTMLDivElement ;
+    private _assets_configurator: AssetsConfigurator;
+
+    private _on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void;
+
+    /**
+     * Constructs an instance of AssetContainer with an optional onClick handler.
+     * @param on_click A function to handle click actions with a specific signature.
+     */
+    constructor(on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void) {
+        this._assets_configurator = new AssetsConfigurator(on_click);
+        
+        this._on_click = on_click;
     }
 
     /**
-     * Updates the profiles view accordingly.
-     * @param profiles The array of profiles to set.
+     * Sets the profiles to be displayed in the AssetsConfigurator.
+     * @param profiles An array of Profile objects representing different user profiles.
      */
     set_profiles(profiles: Profile[]): void{
-        // TO:DO
-        console.log("ComponentsManager: set profiles call   profiles -> ", profiles);
+        this._assets_configurator.set_profiles(profiles);
     }
 
     /**
-     * Updates the listed assets view on the screen with the provided new view data.
-     * @param new_view The new array of assets view data to update.
+     * Sets the active profile and updates the displayed assets view accordingly.
+     * @param profile The active profile to set.
+     * @param new_view An array of CacheAsset objects representing updated asset information for the active profile.
      */
-    update_assets_view(new_view: CacheAsset[]): void{
-        this._assets_container.innerHTML = "";
-
-        new_view.forEach(x => {
-            this._assets_container.appendChild(AssetContainer.create_asset_container(x));
-        });
+    set_active_profile(profile: Profile, new_view: CacheAsset[]): void{
+        this._assets_configurator.set_active_profile(profile, new_view);
     }
 }
