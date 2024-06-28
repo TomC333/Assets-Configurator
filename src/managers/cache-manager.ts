@@ -109,4 +109,22 @@ export class CacheManager{
             return [];
         }
     }
+
+
+    /**
+     * Creates a new cache entry with the specified cache name.
+     * 
+     * @param {string} cache_name The name of the cache to create.
+     * @returns {Promise<void>} A Promise that resolves when the cache entry is successfully created.
+     */
+    async create_new_entry(cache_name: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                await caches.open(cache_name);
+                resolve(); 
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }

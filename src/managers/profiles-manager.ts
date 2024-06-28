@@ -50,4 +50,13 @@ export class ProfilesManager{
     contains(profile_name: string): boolean {
         return this._profiles.get(profile_name) !== undefined;
     }
+
+    /**
+     * Adds a new profile with the given name to the collection of profiles.
+     * 
+     * @param {string} profile_name The name of the profile to add.
+     */
+    add_profile(profile_name: string) {
+        this._profiles.set(profile_name, new Profile(profile_name));
+    }
 }

@@ -19,10 +19,10 @@ export class AssetsConfiguratorControllPanel {
         const create_new_profile_button = document.querySelector(".create-new-profile-button") as HTMLDivElement;
         const delete_profile_button = document.querySelector(".delete-profile-button") as HTMLDivElement;
 
-        const new_profile_name_input = document.getElementById("new-profile-name-input") as HTMLDivElement;
+        const new_profile_name_input = document.getElementById("new-profile-name-input") as HTMLInputElement;
 
         create_new_profile_button.addEventListener("click", () => {
-            this._on_click(ClickActions.CREATE_NEW_PROFILE, new_profile_name_input.innerText);
+            this._on_click(ClickActions.CREATE_NEW_PROFILE, new_profile_name_input.value);
         });
 
         delete_profile_button.addEventListener("click", () => {

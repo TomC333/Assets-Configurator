@@ -19,11 +19,7 @@ export class AssetsManager{
     private _action_handlers: Record<ClickActions, ActionHandler<any>> = {
         [ClickActions.CREATE_NEW_PROFILE]: (profile_name: string) => {
             this._components_manager.show_loading_popup();
-
-
-            setTimeout(() => {
-                this._components_manager.end_loading_popup("sorry but new profile creation function is not available right now");
-            }, 5000);
+            this.try_to_create_profile(profile_name);
         },
         [ClickActions.SWITCH_PROFILE]: (profile_name: string) => {
             this._components_manager.show_loading_popup();
@@ -75,9 +71,11 @@ export class AssetsManager{
      * Sets the active profile, updates the service worker, and updates the component view accordingly.
      * @param profile_name The name of the profile to set as active.
      */
-    private set_active_profile(profile_name: string): void{
+    private set_active_profile(profile_name: string, message: string): void{
+        this._components_manager.show_loading_popup();
+        
         if(!this._profiles_manager.contains(profile_name)){
-            console.error("There is no such profile");
+            console.error(`There is no such profile`);
             return;
         }
 
@@ -86,6 +84,7 @@ export class AssetsManager{
         
         this.set_active_service_worker(url).then(_ => {
             this.set_active_profile_to_components(profile_name, cache_name);
+            this._components_manager.end_loading_popup(message);
         });
     }
 
@@ -119,8 +118,35 @@ export class AssetsManager{
     private init(): void {
         this._components_manager.set_profiles(this._profiles_manager.get_profiles());
 
-        this.set_active_profile(Globals.DEFAULT_PROFILE_NAME);
+        this.set_active_profile(Globals.DEFAULT_PROFILE_NAME, `Wellcome to Assets Configurator, Default profile is active`);
     }
+
+    /**
+     * Tries to create a new profile with the given name.
+     * If successful, sets the active profile and displays a success message.
+     * If the profile name is empty, displays an error message.
+     * If a profile with the same name already exists, displays an error message.
+     * 
+     * @param {string} profile_name The name of the profile to create.
+     */
+    private try_to_create_profile(profile_name: string): void {
+
+        if(profile_name === ""){
+            this._components_manager.end_loading_popup(`Enter user name firstly and try again`);
+            return;
+        }
+
+        if(this._profiles_manager.contains(profile_name)){
+            this._components_manager.end_loading_popup(`Profile with that name is already created`);
+            return;
+        }
+
+        this._cache_manager.create_new_entry(Extenstions.profile_name_to_cache_name(profile_name)).then(() => {
+            this._profiles_manager.add_profile(profile_name);
+            this.set_active_profile(profile_name, `Profile with name -> ${profile_name} <- created sucesfully`);
+        });
+    }
+
 
     
     /**
@@ -137,7 +163,7 @@ export class AssetsManager{
         if(handler){
             handler(...args);
         }else{
-            console.error(`Click event is not handled for ACTION = ${action}`);
+            console.error(`Click event is not handled for ACTION -> ${action} <-`);
         }
     }
 }
