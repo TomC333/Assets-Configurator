@@ -1,38 +1,36 @@
 import { Profile } from "../models/profile";
 import { ClickActions } from "../utils/enums";
-import { ActionHandler, CacheAsset } from "../utils/types";
-import { AssetContainer } from "./asset-container";
+import { ActionHandler } from "../utils/types";
+import { AssetsConfiguratorControllPanel } from "./assets-configurator-control-panel";
+import { AssetsConfiguratorView } from "./assets-configurator-view";
 
 export class AssetsConfigurator {
 
-    private _assets_container: HTMLDivElement;
+    private _configurator_view: AssetsConfiguratorView;
+    private _configurator_controll_panel: AssetsConfiguratorControllPanel;
 
     private _on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void;
 
     constructor(on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void){
-        this._assets_container = document.querySelector(".assets-container") as HTMLDivElement;
-
         this._on_click = on_click;
+
+        this._configurator_view = new AssetsConfiguratorView(on_click);
+        this._configurator_controll_panel = new AssetsConfiguratorControllPanel(on_click);
     }
     
     /**
-     * Updates the profiles view accordingly.
-     * @param profiles The array of profiles to set.
+     * Updates the profiles view with the provided array of profiles.
+     * @param profiles An array of Profile objects to be displayed.
      */
     set_profiles(profiles: Profile[]): void{
         console.log("ComponentsManager: set profiles call   profiles -> ", profiles);
     }
 
-    /**
-     * Sets the active profile and updates the view with new assets.
-     * @param profile The profile object representing the active profile.
-     * @param new_view An array of CacheAsset objects representing the assets to display.
+     /**
+     * Sets the active profile and updates the view with its assets.
+     * @param profile The Profile object representing the active profile.
      */
-    set_active_profile(profile: Profile, new_view: CacheAsset[]): void{
-        this._assets_container.innerHTML = "";
-
-        new_view.forEach(x => {
-            this._assets_container.appendChild(AssetContainer.create_asset_container(x));
-        });
+    set_active_profile(profile: Profile): void{
+        this._configurator_view.set_view(profile.get_cache_data());
     }
 }

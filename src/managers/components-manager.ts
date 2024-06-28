@@ -1,4 +1,5 @@
 import { AssetsConfigurator } from "../components/assets-configurator";
+import { LoadingPopup } from "../components/loading-popup";
 import { Profile } from "../models/profile";
 import { ClickActions } from "../utils/enums";
 import { ActionHandler, CacheAsset } from "../utils/types";
@@ -17,6 +18,8 @@ export class ComponentsManager{
         this._assets_configurator = new AssetsConfigurator(on_click);
         
         this._on_click = on_click;
+
+        LoadingPopup.init();
     }
 
     /**
@@ -32,6 +35,21 @@ export class ComponentsManager{
      * @param profile The active profile to set.
      */
     set_active_profile(profile: Profile): void{
-        this._assets_configurator.set_active_profile(profile, profile.get_cache_data());
+        this._assets_configurator.set_active_profile(profile);
+    }
+
+    /**
+     * Displays the loading popup with a loading animation.
+     */
+    show_loading_popup(): void{
+        LoadingPopup.show_loading_animation();
+    }
+
+    /**
+     * Ends the loading popup animation and displays a message.
+     * @param message The message to display when loading ends.
+     */
+    end_loading_popup(message: string): void{
+        LoadingPopup.end_loading_animation(message);
     }
 }

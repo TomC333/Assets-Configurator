@@ -1,8 +1,7 @@
-import { profile } from "console";
 import { ClickActions } from "../utils/enums";
 import { Extenstions } from "../utils/extensions";
 import { Globals} from "../utils/globals";
-import { ActionHandler, CacheAsset } from "../utils/types";
+import { ActionHandler } from "../utils/types";
 import { CacheManager } from "./cache-manager";
 import { ComponentsManager } from "./components-manager";
 import { ProfilesManager } from "./profiles-manager";
@@ -19,13 +18,28 @@ export class AssetsManager{
     
     private _action_handlers: Record<ClickActions, ActionHandler<any>> = {
         [ClickActions.CREATE_NEW_PROFILE]: (profile_name: string) => {
-            console.log('Handling CREATE_NEW_PROFILE action... ', profile_name);
+            this._components_manager.show_loading_popup();
+
+
+            setTimeout(() => {
+                this._components_manager.end_loading_popup("sorry but new profile creation function is not available right now");
+            }, 5000);
         },
         [ClickActions.SWITCH_PROFILE]: (profile_name: string) => {
-            console.log('Handling SWITCH_PROFILE action...  ', profile_name);
+            this._components_manager.show_loading_popup();
+
+
+            setTimeout(() => {
+                this._components_manager.end_loading_popup("sorry but switch profile function is not available right now");
+            }, 5000);
         },
-        [ClickActions.DELETE_PROFILE]: (profile_name: string) => {
-            console.log('Handling DELETE_PROFILE action...  ', profile_name);
+        [ClickActions.DELETE_PROFILE]: () => {
+            this._components_manager.show_loading_popup();
+
+
+            setTimeout(() => {
+                this._components_manager.end_loading_popup("sorry but delete profiel function is not available right now");
+            }, 5000);
         }
     };
 

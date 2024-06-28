@@ -4,9 +4,218 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assets Configurator</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            box-sizing: border-box;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .basic-button {
+            width: 100%;
+            height: 80%;
+            background: green;
+        }
+        
+        .delete-profile-button{
+            background: red;
+        }
+
+        .assets-configurator-container {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 90%;
+            max-height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            background: burlywood;
+        }
+
+        .assets-configurator-container .assets-configurator-header {
+            height: 5%;
+            width: 96%;
+            background: #005081;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        /* .assets-configurator-header .profiles-container {
+        } */
+
+        .assets-configurator-header .active-profile-settings {
+            margin: 10px;
+            height: 100%;
+            width: 30%;
+        }
+
+        .assets-configurator-header .additional-settings-container {
+            margin: 10px;
+            height: 100%;
+            width: 30%;
+        }
+
+        .additional-settings-container .create-new-profile-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        /* .create-new-profile-container .new-profile-name-input-container{
+
+        } */
+
+        .create-new-profile-container .basic-button {
+            width: 50%;
+        }
+
+        .new-profile-name-input-container input {
+            font-size: 80px;
+        }
+/* 
+        .assets-configurator-header .sorting-parameters-container {
+        } */
+
+        .assets-configurator-container .assets-container {
+            width: 96%;
+            height: 90%;
+            overflow: auto;
+        }
+
+        .assets-container .asset-container{
+            height: 20%;
+            background: #ffe4c482;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .asset-container .asset {
+            height: 80%;
+            width: 50%;
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            justify-content: center;
+        }
+
+        .asset-container .asset img, video {
+            height: 100%;
+        }
+
+        #loading-popup{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: #000000c9;
+            z-index: 99999999;
+        }
+
+        #loading-popup .loading-animation-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 360px;
+            aspect-ratio: 1;
+            display: grid;
+        }
+
+        #loading-popup .loading-animation-container:before,
+        #loading-popup .loading-animation-container:after {
+            content: "";
+            grid-area: 1/1;
+            width: 175px;
+            aspect-ratio: 1;
+            box-shadow: 0 0 0 3px #fff inset;
+            filter: drop-shadow(180px 180px 0 #fff);
+            animation: loader-animation 2s infinite alternate;
+        }
+
+        #loading-popup .loading-animation-container:after {
+            margin: 0 0 0 auto; 
+            filter: drop-shadow(-180px 180px 0 #fff);
+            animation-delay: -1s;
+        }
+
+        @keyframes loader-animation {
+            0%,10%   {border-radius:0}
+            30%,40%  {border-radius:50% 0}
+            60%,70%  {border-radius:50%}
+            90%,100% {border-radius:0 50%}
+        }
+
+        #loading-popup .loading-animation-container.hidden{
+            display: none;
+        }
+
+        #loading-popup .loading-message-container{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 50%;
+            background: #ffffff47;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        #loading-popup .loading-message-container.hidden{
+            display: none;
+        }
+
+        #loading-popup .close-button{
+            width: 20%;
+            height: 10%;
+            background: red;
+        }
+
+        #loading-popup .text-content{
+            width: 90%;
+            height: 80%;
+        }
+
+        #loading-popup.hidden{
+            display: none;
+        }
+
+    </style>
 </head>
-<body>  
-    
+<body>
+
+    <div id="loading-popup">
+        <div class="loading-animation-container"></div>
+        <div class="loading-message-container">
+            <div class="text-content"></div>
+            <div class="close-button"></div>
+        </div>
+    </div>
+
     <div class="assets-configurator-container">
         <div class="assets-configurator-header">
             <div class="profiles-container"></div>
@@ -15,14 +224,18 @@
                 <div class="delete-profile-button basic-button"></div>
             </div>
 
-            <div class="additional-buttons-container">
-                <div class="create-new-profile-button basic-button"></div>
+            <div class="additional-settings-container">
+                <div class="create-new-profile-container">
+                    <div class="new-profile-name-input-container">
+                        <input type="text" id="new-profile-name-input" name="textInput" placeholder="Type new profile name...">
+                    </div>
+                    <div class="create-new-profile-button basic-button"></div>
+                </div>
             </div>
 
             <div class="sorting-parameters-container"></div>
         </div>
         <div class="assets-container"></div>
     </div>
-
 </body>
 </html>
