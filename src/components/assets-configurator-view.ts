@@ -1,3 +1,4 @@
+import { Profile } from "../models/profile";
 import { ClickActions } from "../utils/enums";
 import { ActionHandler, CacheAsset } from "../utils/types";
 import { AssetContainer } from "./asset-container";

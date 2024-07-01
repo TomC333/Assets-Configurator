@@ -46,4 +46,12 @@ export class Profile {
     is_deletable(): boolean{
         return !this.is_default();
     }
+
+    /**
+     * Retrieves the profile name.
+     * @returns The profile name as a string.
+     */
+    get_profile_name(): string{
+        return this._profile_name;
+    }
 }

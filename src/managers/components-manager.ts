@@ -23,6 +23,14 @@ export class ComponentsManager{
     }
 
     /**
+     * Adds a new profile to the AssetsConfigurator for display and management.
+     * @param {Profile} profile The Profile object representing the new profile to add.
+     */
+    add_new_profile(profile: Profile): void{
+        this._assets_configurator.add_new_profile(profile);
+    }
+
+    /**
      * Sets the profiles to be displayed in the AssetsConfigurator.
      * @param profiles An array of Profile objects representing different user profiles.
      */

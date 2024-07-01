@@ -53,7 +53,7 @@ export class AssetContainer{
      * 
      * @param asset The cached asset object containing type and value.
      * @returns HTMLDivElement representing the container for the cached asset.
-     */
+     */ 
     static create_asset_container(asset: CacheAsset): HTMLDivElement {
         const div = document.createElement("div");
         const visual = this.create_asset_element(asset.type, asset.value);
@@ -66,3 +66,5 @@ export class AssetContainer{
         return div;
     }
 }
+
+

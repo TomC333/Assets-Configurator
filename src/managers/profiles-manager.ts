@@ -39,6 +39,9 @@ export class ProfilesManager{
      * @returns An array containing all profiles managed by the manager.
      */
     get_profiles(): Profile[] {
+        console.log("... get profiles calll ...");
+        console.log(this._profiles);
+        console.log(this._profiles.values);
         return Array.from(this._profiles.values());
     }
 

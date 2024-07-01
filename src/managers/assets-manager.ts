@@ -23,11 +23,7 @@ export class AssetsManager{
         },
         [ClickActions.SWITCH_PROFILE]: (profile_name: string) => {
             this._components_manager.show_loading_popup();
-
-
-            setTimeout(() => {
-                this._components_manager.end_loading_popup("sorry but switch profile function is not available right now");
-            }, 5000);
+            this.try_to_switch_profile(profile_name);
         },
         [ClickActions.DELETE_PROFILE]: () => {
             this._components_manager.show_loading_popup();
@@ -143,11 +139,27 @@ export class AssetsManager{
 
         this._cache_manager.create_new_entry(Extenstions.profile_name_to_cache_name(profile_name)).then(() => {
             this._profiles_manager.add_profile(profile_name);
+            this._components_manager.add_new_profile(this._profiles_manager.get_profile(profile_name)!);
             this.set_active_profile(profile_name, `Profile with name -> ${profile_name} <- created sucesfully`);
         });
     }
 
+    /**
+     * Tries to switch to the profile with the given name.
+     * If the profile exists, sets it as the active profile and displays a success message.
+     * If the profile does not exist, displays an error message.
+     * 
+     * @param {string} profile_name The name of the profile to switch to.
+     */
+    private try_to_switch_profile(profile_name: string): void {
+        if(!this._profiles_manager.contains(profile_name)){
+            this._components_manager.end_loading_popup(`There is no such profile`);
+            return;
+        }
 
+        this.set_active_profile(profile_name, `Profile switched to -> ${profile_name} <-`);
+    }
+    
     
     /**
      * Executes the appropriate handler function for a given action based on ClickActions enum.

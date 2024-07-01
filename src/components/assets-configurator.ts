@@ -19,11 +19,20 @@ export class AssetsConfigurator {
     }
     
     /**
+     * Adds a new profile to the configurator control panel.
+     * 
+     * @param {Profile} profile The Profile object representing the new profile to add.
+     */
+    add_new_profile(profile: Profile): void{
+        this._configurator_controll_panel.add_new_profile(profile);
+    }
+
+    /**
      * Updates the profiles view with the provided array of profiles.
      * @param profiles An array of Profile objects to be displayed.
      */
     set_profiles(profiles: Profile[]): void{
-        console.log("ComponentsManager: set profiles call   profiles -> ", profiles);
+       this._configurator_controll_panel.set_profiles(profiles);
     }
 
      /**
