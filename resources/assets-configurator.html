@@ -19,118 +19,33 @@
             user-select: none;
             -webkit-user-select: none;
             -webkit-overflow-scrolling: touch;
+            font-family: sans-serif;
+            font-weight: bold;
+            color: white;
         }
 
-        .basic-button {
-            width: 100%;
-            height: 80%;
-            background: green;
+        .hidden{
+            display: none;
+        }
+
+        @media (pointer: fine) {
+            #loading-popup .close-button:hover, .basic-button:hover, .arrow:hover, .asset-container:hover {
+                filter: brightness(1.1);
+                cursor: pointer;
+            }
+
+            .assets-profile:hover{
+                cursor: pointer;
+                border-color: #ffffff71; 
+            }
         }
         
-        .delete-profile-button{
-            background: red;
-        }
-
-        .assets-configurator-container {
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            height: 90%;
-            max-height: 100%;
-            overflow: hidden;
-            display: flex;
-            justify-content: space-around;
-            flex-direction: column;
-            align-items: center;
-            position: absolute;
-            background: burlywood;
-        }
-
-        .assets-configurator-container .assets-configurator-header {
-            height: 5%;
-            width: 96%;
-            background: #005081;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: center;
-        }
-
-        /* .assets-configurator-header .profiles-container {
-        } */
-
-        .assets-configurator-header .active-profile-settings {
-            margin: 10px;
-            height: 100%;
-            width: 30%;
-        }
-
-        .assets-configurator-header .additional-settings-container {
-            margin: 10px;
-            height: 100%;
-            width: 30%;
-        }
-
-        .additional-settings-container .create-new-profile-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-around;
-        }
-
-        /* .create-new-profile-container .new-profile-name-input-container{
-
-        } */
-
-        .create-new-profile-container .basic-button {
-            width: 50%;
-        }
-
-        .new-profile-name-input-container input {
-            font-size: 80px;
-        }
-/* 
-        .assets-configurator-header .sorting-parameters-container {
-        } */
-
-        .assets-configurator-container .assets-container {
-            width: 96%;
-            height: 90%;
-            overflow: auto;
-        }
-
-        .assets-container .asset-container{
-            height: 20%;
-            background: #ffe4c482;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .asset-container .asset {
-            height: 80%;
-            width: 50%;
-            display: flex;
-            align-items: center;
-            overflow-x: auto;
-            justify-content: center;
-        }
-
-        .asset-container .asset img, video {
-            height: 100%;
-        }
-
         #loading-popup{
             width: 100%;
             height: 100%;
+            background-color: rgb(0 0 0 / 70%);
             position: absolute;
-            background: #000000c9;
-            z-index: 99999999;
+            z-index: 999999;
         }
 
         #loading-popup .loading-animation-container {
@@ -138,7 +53,7 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 360px;
+            width: 95px;
             aspect-ratio: 1;
             display: grid;
         }
@@ -147,16 +62,16 @@
         #loading-popup .loading-animation-container:after {
             content: "";
             grid-area: 1/1;
-            width: 175px;
+            width: 45px;
             aspect-ratio: 1;
             box-shadow: 0 0 0 3px #fff inset;
-            filter: drop-shadow(180px 180px 0 #fff);
+            filter: drop-shadow(50px 50px 0 #fff);
             animation: loader-animation 2s infinite alternate;
         }
 
         #loading-popup .loading-animation-container:after {
             margin: 0 0 0 auto; 
-            filter: drop-shadow(-180px 180px 0 #fff);
+            filter: drop-shadow(-50px 50px 0 #fff);
             animation-delay: -1s;
         }
 
@@ -167,78 +82,222 @@
             90%,100% {border-radius:0 50%}
         }
 
-        #loading-popup .loading-animation-container.hidden{
-            display: none;
-        }
-
         #loading-popup .loading-message-container{
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 50%;
-            height: 50%;
-            background: #ffffff47;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-evenly;
         }
 
-        #loading-popup .loading-message-container.hidden{
-            display: none;
-        }
-
         #loading-popup .close-button{
-            width: 20%;
-            height: 10%;
-            background: #edff0024;
+            padding: 15px;
+            border-radius: 30px;
+            background: rgb(240, 160, 0);
+            width: fit-content;
+            transition: 0.5s ease all;
         }
 
         #loading-popup .text-content{
-            width: 90%;
-            height: 80%;
             text-align: center;
-            color: white;
-            font-size: 100px;
+            width: 70%;
+            margin: 0 auto;
         }
 
-        #loading-popup.hidden{
-            display: none;
+        .basic-button{
+            width: fit-content;
+            padding: 10px;
+            background: #00c8ff;
+            border-radius: 20px;
+            transition: 0.5s all ease;
+        }
+
+        .assets-configurator-container{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: #ffd092;
+            overflow: hidden;
+        }
+
+        .assets-configurator-header{
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profiles-container-wrapper{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profiles-container-scroll-wrapper{
+            width: 80%;
+            overflow: hidden;
+        }
+
+        .profiles-container{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            transform: translateX(0%);
+            transition: 0.5s all ease;
+        }
+
+        .assets-profile{
+            width: 30%;
+            min-width: 25%;
+            text-align: center;
+            padding: 10px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            transition: 0.5s border-color ease;
+        }
+
+        .assets-profile.active{
+            border: 2px solid rgb(0, 200, 255);
+        }
+        
+        .arrow{
+            width: 0; 
+            height: 0; 
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent; 
+            border-radius: 10px;
+            transition: 0.5s all ease;
+        }
+
+        .arrow-right {
+            border-left: 10px solid rgb(0, 200, 255);
+        }
+
+        .arrow-left {
+           
+            border-right:10px solid rgb(0, 200, 255);
+        }
+
+        .settings-and-filters-container{
+            width: 80%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .create-new-profile-container{
+            display: flex;
+        }
+
+        .create-new-profile-container input{
+            color: black;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        
+        .assets-container{
+            height: 100%;
+            display: flex;
+            overflow: auto;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .asset-container{
+            width: 30%;
+            height: 30%;
+            margin-bottom: 20px;
+            background: rgb(0 200 255 / 52%);
+            border-radius: 30px;
+            transition: 0.5s all ease;
+        }
+
+        .asset{
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .asset-container img, .asset-container audio{
+            max-width: 100%;
+            max-height: 100%;
         }
 
     </style>
 </head>
 <body>
 
-    <div id="loading-popup">
+    <div id="loading-popup" class="hidden">
         <div class="loading-animation-container"></div>
         <div class="loading-message-container">
-            <div class="text-content"></div>
-            <div class="close-button"></div>
+            <div class="text-content">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus quisquam expedita ut quae commodi distinctio exercitationem maxime ipsam iste nihil eligendi iure ducimus quasi tempore, voluptatem vel cupiditate minima nesciunt?</div>
+            <div class="close-button">CLOSE</div>
         </div>
     </div>
+
 
     <div class="assets-configurator-container">
         <div class="assets-configurator-header">
-            <div class="profiles-container"></div>
-
-            <div class="active-profile-settings">
-                <div class="delete-profile-button basic-button"></div>
+            <div class="profiles-container-wrapper">
+                <div class="arrow-left arrow"></div>
+                <div class="profiles-container-scroll-wrapper">
+                    <div class="profiles-container">
+                       
+                    </div>
+                </div>
+               
+                <div class="arrow-right arrow"></div>
             </div>
 
-            <div class="additional-settings-container">
+            <div class="settings-and-filters-container">
+                <div class="delete-profile-button basic-button">DELETE</div>
                 <div class="create-new-profile-container">
-                    <div class="new-profile-name-input-container">
-                        <input type="text" id="new-profile-name-input" name="textInput" placeholder="Type new profile name...">
-                    </div>
-                    <div class="create-new-profile-button basic-button"></div>
+                    <input type="text" id="new-profile-name-input" name="textInput" placeholder="Type new profile name...">
+                    <div class="create-new-profile-button basic-button">CREATE</div>
                 </div>
             </div>
-
-            <div class="sorting-parameters-container"></div>
         </div>
-        <div class="assets-container"></div>
+
+        <div class="assets-configurator-body assets-container"></div>
     </div>
+
+
+
+
+    <script>
+        const right_profile_scroll = document.querySelector(".arrow-right");
+        const left_profile_scroll = document.querySelector(".arrow-left");
+        const profiles_container = document.querySelector(".profiles-container");
+
+        let translateX = 0;
+
+        right_profile_scroll.addEventListener('click', () => {
+            if(translateX > -Math.floor(profiles_container.querySelectorAll(".assets-profile").length / 4) * 100){
+                translateX -= 100;
+                profiles_container.style.transform = `translateX(${translateX}%)`;
+            }
+        });
+
+        left_profile_scroll.addEventListener('click', () => {
+            if(translateX < 0){
+                translateX += 100;
+                profiles_container.style.transform = `translateX(${translateX}%)`;
+            }
+        });
+
+    </script>
+
 </body>
 </html>

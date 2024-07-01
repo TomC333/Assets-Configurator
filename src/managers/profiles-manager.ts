@@ -39,7 +39,7 @@ export class ProfilesManager{
      * @returns An array containing all profiles managed by the manager.
      */
     get_profiles(): Profile[] {
-        return Object.values(this._profiles);
+        return Array.from(this._profiles.values());
     }
 
     /**
