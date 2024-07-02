@@ -40,6 +40,7 @@ export class AssetsConfigurator {
      * @param profile The Profile object representing the active profile.
      */
     set_active_profile(profile: Profile): void{
+        this._configurator_controll_panel.set_active_profile(profile);
         this._configurator_view.set_view(profile.get_cache_data());
     }
 }

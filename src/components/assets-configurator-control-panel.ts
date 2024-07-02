@@ -1,4 +1,3 @@
-import { access } from "fs";
 import { Profile } from "../models/profile";
 import { ClickActions } from "../utils/enums";
 import { ActionHandler } from "../utils/types";
@@ -83,5 +82,18 @@ export class AssetsConfiguratorControllPanel {
         profiles.forEach((x) => {
             this.add_new_profile(x);
         });
+    }
+
+    /**
+     * Sets the active profile in a container of profile elements based on the profile name.
+     * @param profile The profile object containing the profile name to activate.
+     */
+    set_active_profile(profile: Profile): void{
+        this._profiles_container.querySelectorAll('.assets-profile').forEach((x) => {
+            x.classList.remove('active');
+            if(x.textContent === profile.get_profile_name()){
+                x.classList.add('active');
+            }
+        });   
     }
 }

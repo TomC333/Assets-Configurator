@@ -24,12 +24,8 @@
             color: white;
         }
 
-        .hidden{
-            display: none;
-        }
-
         @media (pointer: fine) {
-            #loading-popup .close-button:hover, .basic-button:hover, .arrow:hover, .asset-container:hover {
+            #loading-popup .close-button:hover, .basic-button:hover, .arrow:hover, .asset:hover {
                 filter: brightness(1.1);
                 cursor: pointer;
             }
@@ -138,6 +134,7 @@
             align-items: center;
             overflow: hidden;
             position: relative;
+            margin-bottom: 20px;
         }
 
         .profiles-container-scroll-wrapper{
@@ -235,6 +232,20 @@
             max-height: 100%;
         }
 
+        .asset-container-popup{
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 100;
+            background-color: black;
+        }
+
+        #loading-popup.hidden, .loading-animation-container.hidden, .loading-message-container.hidden, .asset-container-popup.hidden{
+            display: none !important;
+        }
+
     </style>
 </head>
 <body>
@@ -242,7 +253,7 @@
     <div id="loading-popup">
         <div class="loading-animation-container"></div>
         <div class="loading-message-container">
-            <div class="text-content">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus quisquam expedita ut quae commodi distinctio exercitationem maxime ipsam iste nihil eligendi iure ducimus quasi tempore, voluptatem vel cupiditate minima nesciunt?</div>
+            <div class="text-content"></div>
             <div class="close-button">CLOSE</div>
         </div>
     </div>
@@ -272,9 +283,6 @@
 
         <div class="assets-configurator-body assets-container"></div>
     </div>
-
-
-
 
     <script>
         const right_profile_scroll = document.querySelector(".arrow-right");

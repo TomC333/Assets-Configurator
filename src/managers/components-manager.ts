@@ -2,7 +2,7 @@ import { AssetsConfigurator } from "../components/assets-configurator";
 import { LoadingPopup } from "../components/loading-popup";
 import { Profile } from "../models/profile";
 import { ClickActions } from "../utils/enums";
-import { ActionHandler, CacheAsset } from "../utils/types";
+import { ActionHandler } from "../utils/types";
 
 export class ComponentsManager{
 

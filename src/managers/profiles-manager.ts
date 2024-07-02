@@ -3,6 +3,8 @@ import { Profile } from "../models/profile";
 export class ProfilesManager{
     private _profiles: Map<string, Profile>;
 
+    private _active_profile!: Profile;
+
     /**
      * Constructs a new ProfilesManager instance with an initial set of profile names.
      * @param profile_names An array of profile names to initialize the manager with.
@@ -39,9 +41,6 @@ export class ProfilesManager{
      * @returns An array containing all profiles managed by the manager.
      */
     get_profiles(): Profile[] {
-        console.log("... get profiles calll ...");
-        console.log(this._profiles);
-        console.log(this._profiles.values);
         return Array.from(this._profiles.values());
     }
 
@@ -61,5 +60,21 @@ export class ProfilesManager{
      */
     add_profile(profile_name: string) {
         this._profiles.set(profile_name, new Profile(profile_name));
+    }
+
+    /**
+     * Stores the active profile.
+     * @param profile The profile object to store as active.
+     */
+    set_active_profile(profile: Profile){
+        this._active_profile = profile;
+    }
+
+    /**
+     * Returns the currently active profile.
+     * @returns The active profile object.
+     */
+    get_active_profiel(): Profile{
+        return this._active_profile;
     }
 }

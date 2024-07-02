@@ -1,4 +1,3 @@
-import { Profile } from "../models/profile";
 import { ClickActions } from "../utils/enums";
 import { ActionHandler, CacheAsset } from "../utils/types";
 import { AssetContainer } from "./asset-container";
@@ -23,7 +22,7 @@ export class AssetsConfiguratorView{
         this._assets_container.innerHTML = "";
 
         view.forEach(x => {
-            this._assets_container.appendChild(AssetContainer.create_asset_container(x));
+            this._assets_container.appendChild(AssetContainer.create_asset_container(x, this._on_click));
         });
     }
 }

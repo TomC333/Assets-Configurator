@@ -4,6 +4,7 @@ import { Globals} from "../utils/globals";
 import { ActionHandler } from "../utils/types";
 import { CacheManager } from "./cache-manager";
 import { ComponentsManager } from "./components-manager";
+import { LocalStorageManager } from "./local-storage-manager";
 import { ProfilesManager } from "./profiles-manager";
 import { ServiceWorkerManager } from "./service-worker-manager";
 
@@ -14,8 +15,8 @@ export class AssetsManager{
     private _components_manager: ComponentsManager;
     private _profiles_manager!: ProfilesManager;
     private _cache_manager: CacheManager;
+    private _local_storage_manager: LocalStorageManager;
 
-    
     private _action_handlers: Record<ClickActions, ActionHandler<any>> = {
         [ClickActions.CREATE_NEW_PROFILE]: (profile_name: string) => {
             this._components_manager.show_loading_popup();
@@ -32,6 +33,10 @@ export class AssetsManager{
             setTimeout(() => {
                 this._components_manager.end_loading_popup("sorry but delete profiel function is not available right now");
             }, 5000);
+        },
+        [ClickActions.UPDATE_ASSET]: (key: string, file_list: FileList | null) => {
+            this._components_manager.show_loading_popup();
+            this.try_to_update_asset(key, file_list);
         }
     };
 
@@ -56,6 +61,9 @@ export class AssetsManager{
         this._service_workers_manager = new ServiceWorkerManager();
         this._components_manager = new ComponentsManager(this.on_click.bind(this));
         this._cache_manager = new CacheManager();
+        this._local_storage_manager = new LocalStorageManager();
+
+        this._components_manager.show_loading_popup();
 
         this._cache_manager.get_all_cache_names().then(cache_names => {
             this._profiles_manager = new ProfilesManager(cache_names.map(name => Extenstions.cache_name_to_profile_name(name)));
@@ -71,7 +79,7 @@ export class AssetsManager{
         this._components_manager.show_loading_popup();
         
         if(!this._profiles_manager.contains(profile_name)){
-            console.error(`There is no such profile`);
+            this._components_manager.end_loading_popup(`There is no such profile`);
             return;
         }
 
@@ -79,6 +87,7 @@ export class AssetsManager{
         const url = Extenstions.generate_api_request_url(this._api_endpoint, cache_name);
         
         this.set_active_service_worker(url).then(_ => {
+            this._profiles_manager.set_active_profile(this._profiles_manager.get_profile(profile_name)!);
             this.set_active_profile_to_components(profile_name, cache_name);
             this._components_manager.end_loading_popup(message);
         });
@@ -158,6 +167,23 @@ export class AssetsManager{
         }
 
         this.set_active_profile(profile_name, `Profile switched to -> ${profile_name} <-`);
+    }
+
+    private async try_to_update_asset(key: string, file_list: FileList | null){
+        if(!file_list){
+            this._components_manager.end_loading_popup(`Old asset preserved`);
+            return;
+        }
+
+        const file = file_list[0];
+        if(!file){
+            this._components_manager.end_loading_popup(`Old asset preserved`);
+            return;
+        }
+
+        await caches.open(Extenstions.profile_name_to_cache_name(this._profiles_manager.get_active_profiel().get_profile_name())).then(cache => {
+            cache.put(key, new Response(file));
+        });
     }
     
     

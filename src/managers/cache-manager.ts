@@ -127,4 +127,21 @@ export class CacheManager{
             }
         });
     }
+
+    /**
+     * Checks if a cache entry with the specified name exists.
+     * 
+     * @param {string} cache_name The name of the cache to check.
+     * @returns {Promise<boolean>} A Promise that resolves to true if the cache exists, false otherwise.
+     */
+    async contains_cache(cache_name: string): Promise<boolean> {
+        return new Promise<boolean>(async (resovle, reject) => {
+            try{
+                const caches = await this.get_all_cache_names();
+                resovle(caches.includes(cache_name));
+            }catch(error){
+                reject(error);
+            }
+        });
+    }
 }
