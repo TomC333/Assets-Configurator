@@ -116,7 +116,7 @@ export class AssetsManager{
         return new Promise<void>(async (resolve, reject) => {
             try{
                 await this.get_initial_cache_names().then((caches) => {
-                    this._profiles_manager = new ProfilesManager(caches);
+                    this._profiles_manager = new ProfilesManager(caches.map((x) => Extenstions.cache_name_to_profile_name(x)));
                     this._components_manager.set_profiles(this._profiles_manager.get_profiles());
     
                     const initial_profile = this.get_initial_profile(caches);
