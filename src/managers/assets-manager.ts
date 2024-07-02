@@ -262,6 +262,12 @@ export class AssetsManager{
             return;
         }
 
+        if(this._profiles_manager.get_active_profile().is_default()){
+            this._components_manager.end_loading_popup(`Assets on default profile can't be overriden`);
+            return;
+        }
+
+
         this._cache_manager.set_cache(Extenstions.profile_name_to_cache_name(this._profiles_manager.get_active_profile().get_profile_name()), key, new Response(file)).then(() => {
             this.set_active_profile(this._profiles_manager.get_active_profile().get_profile_name(), `Cache update sucesfully`);
 
