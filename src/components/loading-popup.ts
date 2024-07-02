@@ -9,6 +9,8 @@ export class LoadingPopup{
     private static _text_content_container: HTMLDivElement = this._loading_popup.querySelector(".text-content") as HTMLDivElement;
     private static _close_button: HTMLDivElement = this._loading_popup.querySelector(".close-button") as HTMLDivElement;
 
+    private static _loading_animation_running: boolean = false;
+
     /**
      * Initializes the loading popup by adding event listeners and hiding it initially.
      */
@@ -24,6 +26,11 @@ export class LoadingPopup{
      * Displays the loading animation and shows the loading popup.
      */
     static show_loading_animation(): void{
+        if(this._loading_animation_running){
+            return;
+        }
+
+        this._loading_animation_running = true;
         this._loading_popup.classList.remove("hidden");
         this._loading_animation.classList.remove("hidden");
     }
@@ -33,6 +40,7 @@ export class LoadingPopup{
      * @param message The message to display when loading ends.
      */
     static end_loading_animation(message: string): void{
+        this._loading_animation_running = false;
         this._text_content_container.innerText = message;
         
         this._loading_animation.classList.add("hidden");
@@ -43,6 +51,8 @@ export class LoadingPopup{
      * Hides the loading popup and resets its state.
      */
     static hide(): void {
+        this._text_content_container.innerText = "";
+
         this._loading_popup.classList.add("hidden");
         this._loading_animation.classList.add("hidden");
         this._text_content_container.classList.add("hidden");

@@ -65,12 +65,75 @@ export class AssetsManager{
 
         this._components_manager.show_loading_popup();
 
-        this._cache_manager.get_all_cache_names().then(cache_names => {
-            this._profiles_manager = new ProfilesManager(cache_names.map(name => Extenstions.cache_name_to_profile_name(name)));
-            this.init();
-        });
+        this.init();
     }   
-       
+    
+    /**
+     * Retrieves initial cache names, ensuring the default cache exists if necessary.
+     * @returns {Promise<string[]>} A Promise that resolves to an array of cache names.
+     * @private
+     */
+    private async get_initial_cache_names(): Promise<string[]>{
+        return new Promise<string[]>(async (resolve, reject) => {
+            try{
+                await this._cache_manager.get_all_cache_names().then(async (caches) => {
+                    if(caches.includes(Globals.DEFAULT_CACHE_NAME)){
+                        resolve(caches);
+                    }
+    
+                    await this._cache_manager.create_new_entry(Globals.DEFAULT_CACHE_NAME).then(() => {
+                        this._local_storage_manager.set_item(Globals.LOCAL_STORAGE_PREVIOUS_PROFILE_KEY, Globals.DEFAULT_PROFILE_NAME);
+                        caches.push(Globals.DEFAULT_CACHE_NAME);
+
+                        resolve(caches);                        
+                    });
+                });
+            }catch(error){
+                reject(error);
+            }
+        });
+    }
+
+    /**
+     * Determines the initial active profile based on previous settings or defaults.
+     * @param {string[]} cache_names - An array of cache names.
+     * @returns {string} The initial active profile name.
+     * @private
+     */
+    private get_initial_profile(cache_names: string[]): string {
+        const previous_profile = this._local_storage_manager.get_item(Globals.LOCAL_STORAGE_PREVIOUS_PROFILE_KEY);
+
+        if(previous_profile !== null && cache_names.includes(Extenstions.profile_name_to_cache_name(previous_profile))){
+            return previous_profile;
+        }
+
+        return Globals.DEFAULT_PROFILE_NAME;
+    }
+    
+    /**
+     * Initializes the manager by setting up cache names, profiles, and active components.
+     * @returns {Promise<void>} A Promise that resolves when initialization is complete.
+     * @private
+     */
+    private async init(): Promise<void> {
+
+        return new Promise<void>(async (resolve, reject) => {
+            try{
+                await this.get_initial_cache_names().then((caches) => {
+                    this._profiles_manager = new ProfilesManager(caches);
+                    this._components_manager.set_profiles(this._profiles_manager.get_profiles());
+    
+                    const initial_profile = this.get_initial_profile(caches);
+                    this.set_active_profile(initial_profile, `Welcome to Assets Configurator, ${initial_profile} is set as a Active Profile`);
+    
+                    resolve();
+                });
+            }catch(error){
+                reject(error);
+            }
+        });
+    }
+    
     /**
      * Sets the active profile, updates the service worker, and updates the component view accordingly.
      * @param profile_name The name of the profile to set as active.
@@ -116,17 +179,6 @@ export class AssetsManager{
     }
 
     /**
-     * Initializes the application setup.
-     * This method sets up necessary configurations for the application to function correctly.
-     * It should be called during the initialization phase of the application.
-     */
-    private init(): void {
-        this._components_manager.set_profiles(this._profiles_manager.get_profiles());
-
-        this.set_active_profile(Globals.DEFAULT_PROFILE_NAME, `Wellcome to Assets Configurator, Default profile is active`);
-    }
-
-    /**
      * Tries to create a new profile with the given name.
      * If successful, sets the active profile and displays a success message.
      * If the profile name is empty, displays an error message.
@@ -135,18 +187,18 @@ export class AssetsManager{
      * @param {string} profile_name The name of the profile to create.
      */
     private try_to_create_profile(profile_name: string): void {
-
         if(profile_name === ""){
             this._components_manager.end_loading_popup(`Enter user name firstly and try again`);
             return;
         }
 
         if(this._profiles_manager.contains(profile_name)){
-            this._components_manager.end_loading_popup(`Profile with that name is already created`);
+            this._components_manager.end_loading_popup(`Profile with that name is already exists`);
             return;
         }
 
         this._cache_manager.create_new_entry(Extenstions.profile_name_to_cache_name(profile_name)).then(() => {
+            this._local_storage_manager.set_item(Globals.LOCAL_STORAGE_PREVIOUS_PROFILE_KEY, profile_name);
             this._profiles_manager.add_profile(profile_name);
             this._components_manager.add_new_profile(this._profiles_manager.get_profile(profile_name)!);
             this.set_active_profile(profile_name, `Profile with name -> ${profile_name} <- created sucesfully`);
@@ -166,7 +218,7 @@ export class AssetsManager{
             return;
         }
 
-        this.set_active_profile(profile_name, `Profile switched to -> ${profile_name} <-`);
+        this.set_active_profile(profile_name, `Profile switched to -> ${profile_name} <- :)`);
     }
 
     private async try_to_update_asset(key: string, file_list: FileList | null){
