@@ -26,13 +26,9 @@ export class AssetsManager{
             this._components_manager.show_loading_popup();
             this.try_to_switch_profile(profile_name);
         },
-        [ClickActions.DELETE_PROFILE]: () => {
+        [ClickActions.DELETE_PROFILE]: (profile_name) => {
             this._components_manager.show_loading_popup();
-
-
-            setTimeout(() => {
-                this._components_manager.end_loading_popup("sorry but delete profiel function is not available right now");
-            }, 5000);
+            this.try_to_delete_profile(profile_name);
         },
         [ClickActions.UPDATE_ASSET]: (key: string, file_list: FileList | null) => {
             this._components_manager.show_loading_popup();
@@ -221,6 +217,39 @@ export class AssetsManager{
         this.set_active_profile(profile_name, `Profile switched to -> ${profile_name} <- :)`);
     }
 
+    /**
+     * Tries to delete a profile from the cache and sets a new active profile if successful.
+     * Displays appropriate messages if the profile does not exist or is not deletable.
+     * 
+     * @param {string} profile_name The name of the profile to delete.
+     * @returns {void}
+     * @private
+     */
+    private try_to_delete_profile(profile_name: string): void {
+        if(!this._profiles_manager.contains(profile_name)){
+            this._components_manager.end_loading_popup(`There is no such profile`);
+            return;
+        }
+
+        if(this._profiles_manager.get_profile(profile_name)?.is_deletable){
+            this._components_manager.end_loading_popup(`That profile is not deletable`)
+            return;
+        }
+
+        this._cache_manager.delete_cache(profile_name).then(() => {
+            this.set_active_profile(Globals.DEFAULT_PROFILE_NAME, `Profile deleted sucesfully, switching to ${Globals.DEFAULT_PROFILE_NAME}  profile`);
+        });
+    }
+
+    /**
+     * Tries to update an asset in the active profile's cache with a new file.
+     * Displays appropriate messages if the file is not provided or is invalid.
+     * 
+     * @param {string} key The key under which to update the asset.
+     * @param {FileList | null} file_list The list of files to update the asset with.
+     * @returns {void}
+     * @private
+     */
     private async try_to_update_asset(key: string, file_list: FileList | null){
         if(!file_list){
             this._components_manager.end_loading_popup(`Old asset preserved`);
@@ -233,11 +262,12 @@ export class AssetsManager{
             return;
         }
 
-        await caches.open(Extenstions.profile_name_to_cache_name(this._profiles_manager.get_active_profiel().get_profile_name())).then(cache => {
-            cache.put(key, new Response(file));
+        this._cache_manager.set_cache(Extenstions.profile_name_to_cache_name(this._profiles_manager.get_active_profile().get_profile_name()), key, new Response(file)).then(() => {
+            this.set_active_profile(this._profiles_manager.get_active_profile().get_profile_name(), `Cache update sucesfully`);
+
+            // TO:DO change that logic, it's not necesarry to set profile again, it will be enough to change asset only 
         });
     }
-    
     
     /**
      * Executes the appropriate handler function for a given action based on ClickActions enum.

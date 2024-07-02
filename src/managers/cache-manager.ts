@@ -27,7 +27,6 @@ export class CacheManager{
         }
     }
 
-
     /**
      * Retrieves unique key-value pairs from specified caches.
      * Keys existing in both caches will have their value taken from the second cache.
@@ -110,7 +109,6 @@ export class CacheManager{
         }
     }
 
-
     /**
      * Creates a new cache entry with the specified cache name.
      * 
@@ -129,6 +127,28 @@ export class CacheManager{
     }
 
     /**
+     * Deletes a cache entry with the specified name.
+     * 
+     * @param {string} cache_name The name of the cache to delete.
+     * @returns {Promise<void>} A Promise that resolves when the cache entry is successfully deleted.
+     */
+    async delete_cache(cache_name: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                const exists = await this.contains_cache(cache_name);
+                if (exists) {
+                    await caches.delete(cache_name);
+                    resolve();
+                } else {
+                    reject();
+                }
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    /**
      * Checks if a cache entry with the specified name exists.
      * 
      * @param {string} cache_name The name of the cache to check.
@@ -139,6 +159,18 @@ export class CacheManager{
             try{
                 const caches = await this.get_all_cache_names();
                 resovle(caches.includes(cache_name));
+            }catch(error){
+                reject(error);
+            }
+        });
+    }
+
+    async set_cache(cache_name: string, key: URL | RequestInfo, response: Response): Promise<void>{
+        return new Promise<void>(async (resolve, reject) => {
+            try{
+                caches.open(cache_name).then((cache) => {
+                    cache.put(key, response).then(() => resolve());
+                })
             }catch(error){
                 reject(error);
             }

@@ -74,7 +74,7 @@ export class ProfilesManager{
      * Returns the currently active profile.
      * @returns The active profile object.
      */
-    get_active_profiel(): Profile{
+    get_active_profile(): Profile{
         return this._active_profile;
     }
 }
