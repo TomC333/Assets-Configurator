@@ -46,6 +46,13 @@ export class AssetContainer{
         return div;
     }
 
+    /**
+     * Creates a container for displaying asset key information.
+     * 
+     * @param {CacheAsset} asset The asset object containing key information.
+     * @returns {HTMLDivElement} The created div element containing the asset key.
+     * @static
+     */
     static create_asset_info_container(asset: CacheAsset): HTMLDivElement {
         const div = document.createElement('div');
         const p = document.createElement('p');
@@ -58,12 +65,20 @@ export class AssetContainer{
         return div;
     }
 
+    /**
+     * Creates a container for managing asset settings, including file upload and link input.
+     * 
+     * @param {CacheAsset} asset The asset object to manage settings for.
+     * @param {function} on_click The click handler function to invoke on update actions.
+     * @returns {HTMLDivElement} The created div element containing asset settings controls.
+     * @static
+     */
     static create_asset_settings_container(asset: CacheAsset, on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void): HTMLDivElement {
         const div = document.createElement('div');
         const file_input = document.createElement('input');
         const link_input = document.createElement('input');
-        const save_button = document.createElement('div');
-        const close_button = document.createElement('div');
+        const link_update_button = document.createElement('div');
+        const file_update_button = document.createElement('div');
 
         file_input.type = 'file';
         file_input.name = 'file-upload';
@@ -89,33 +104,44 @@ export class AssetContainer{
                 break;
         }
 
-        save_button.innerText = "SAVE";
-        save_button.classList.add('save-button', 'basic-button');
+        link_update_button.innerText = "UPDATE";
+        link_update_button.classList.add('link-update-button', 'basic-button');
 
-        close_button.innerText = "CLOSE";
-        close_button.classList.add('close-button', 'basic-button');
+        file_update_button.innerText = "UPDATE";
+        file_update_button.classList.add('file-update-button', 'basic-button');
 
-        save_button.addEventListener('click', () => {
-            const file = file_input.files ? file_input.files[0] : null;
+        link_update_button.addEventListener('click', () => {
             const link = link_input.value.trim();
-            on_click(ClickActions.UPDATE_ASSET, asset.key, file, link, file_input.accept);
+            on_click(ClickActions.UPDATE_ASSET_FROM_LINK, asset.key, link);
 
             file_input.value = '';
             link_input.value = '';
         });
 
-        close_button.addEventListener('click', () => {
-            div.classList.add('hidden');
+        file_update_button.addEventListener('click', () => {
+            const file = file_input.files ? file_input.files[0] : null;
+            on_click(ClickActions.UPDATE_ASSET, asset.key, file);
+
+            file_input.value = '';
+            link_input.value = '';
         });
 
-        div.appendChild(file_input);
         div.appendChild(link_input);
-        div.appendChild(save_button);
-        div.appendChild(close_button);
+        div.appendChild(link_update_button);
+        div.appendChild(file_input);
+        div.appendChild(file_update_button);
 
         return div;
     }
 
+    /**
+    * Creates a container to display an asset with its information, settings, and visual representation.
+    * 
+    * @param {CacheAsset} asset The asset object containing key and value information.
+    * @param {function} on_click The click handler function to invoke on update actions.
+    * @returns {HTMLDivElement} The created div element containing the asset container.
+    * @static
+    */
     static create_asset_container(asset: CacheAsset, on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void): HTMLDivElement {
         const div = document.createElement("div");
         const info = this.create_asset_info_container(asset);
