@@ -46,26 +46,48 @@ export class AssetContainer{
         return div;
     }
 
-    /**
-     * Creates an HTMLDivElement representing a popup element for editing or updating a cached asset.
-     * @param key The key or identifier of the cached asset.
-     * @param type The type of the cached asset (e.g., CacheTypes.IMAGE, CacheTypes.VIDEO, CacheTypes.AUDIO, CacheTypes.JSON).
-     * @param value The value of the cached asset, specific to the type.
-     * @param on_click Function to handle click actions on the popup (e.g., updating the asset).
-     * @returns HTMLDivElement representing the popup element for the cached asset.
-     */
-    private static create_asset_popup_element(key: string, type: CacheTypes, value: any, on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void): HTMLDivElement{
+    static create_asset_info_container(asset: CacheAsset): HTMLDivElement {
         const div = document.createElement('div');
-        const asset_element = this.create_asset_element(type, value);
+        const p = document.createElement('p');
+
+        p.classList.add('asset-key-container');
+        p.innerText = asset.key;
+
+        div.appendChild(p);
+
+        return div;
+    }
+
+    static create_asset_settings_container(asset: CacheAsset, on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void): HTMLDivElement {
+        const div = document.createElement('div');
         const file_input = document.createElement('input');
+        const link_input = document.createElement('input');
         const save_button = document.createElement('div');
         const close_button = document.createElement('div');
 
-        asset_element.classList.add('popup-asset');
-
         file_input.type = 'file';
         file_input.name = 'file-upload';
-        file_input.accept = 'audio/*,video/*,image/*';
+
+        link_input.type = 'text';
+        link_input.placeholder = 'Enter asset link';
+
+        switch (asset.type) {
+            case CacheTypes.IMAGE:
+                file_input.accept = 'image/*';
+                break;
+            case CacheTypes.VIDEO:
+                file_input.accept = 'video/*';
+                break;
+            case CacheTypes.AUDIO:
+                file_input.accept = 'audio/*';
+                break;
+            case CacheTypes.JSON:
+                file_input.accept = '.json';
+                break;
+            default:
+                file_input.accept = ''; 
+                break;
+        }
 
         save_button.innerText = "SAVE";
         save_button.classList.add('save-button', 'basic-button');
@@ -74,45 +96,40 @@ export class AssetContainer{
         close_button.classList.add('close-button', 'basic-button');
 
         save_button.addEventListener('click', () => {
-            on_click(ClickActions.UPDATE_ASSET, key, file_input.files);
+            const file = file_input.files ? file_input.files[0] : null;
+            const link = link_input.value.trim();
+            on_click(ClickActions.UPDATE_ASSET, asset.key, file, link, file_input.accept);
+
+            file_input.value = '';
+            link_input.value = '';
         });
 
         close_button.addEventListener('click', () => {
             div.classList.add('hidden');
         });
 
-        div.appendChild(asset_element);
         div.appendChild(file_input);
+        div.appendChild(link_input);
         div.appendChild(save_button);
         div.appendChild(close_button);
 
         return div;
     }
 
-    /**
-     * Creates an HTMLDivElement representing a container for a cached asset.
-     * 
-     * TO:DO -> add update button <-
-     * 
-     * @param asset The cached asset object containing type and value.
-     * @returns HTMLDivElement representing the container for the cached asset.
-     */ 
     static create_asset_container(asset: CacheAsset, on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void): HTMLDivElement {
         const div = document.createElement("div");
+        const info = this.create_asset_info_container(asset);
+        const settings = this.create_asset_settings_container(asset, on_click);
         const visual = this.create_asset_element(asset.type, asset.value);
-        const popup = this.create_asset_popup_element(asset.key, asset.type, asset.value, on_click);
 
-        popup.classList.add('asset-container-popup', 'hidden');
         div.classList.add('asset-container');
+        info.classList.add('asset-info');
+        settings.classList.add('asset-settings');
         visual.classList.add('asset');
 
+        div.appendChild(info);
+        div.appendChild(settings);
         div.appendChild(visual);
-        div.appendChild(popup);
-
-
-        visual.addEventListener('click', () => {
-            popup.classList.remove('hidden');
-        });
 
         return div;
     }

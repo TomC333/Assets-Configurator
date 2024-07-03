@@ -10,4 +10,5 @@ export enum ClickActions {
     SWITCH_PROFILE,
     DELETE_PROFILE,
     UPDATE_ASSET,
+    UPDATE_ASSET_FROM_LINK,
 }

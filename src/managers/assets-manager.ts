@@ -30,9 +30,13 @@ export class AssetsManager{
             this._components_manager.show_loading_popup();
             this.try_to_delete_profile(profile_name);
         },
-        [ClickActions.UPDATE_ASSET]: (key: string, file_list: FileList | null) => {
+        [ClickActions.UPDATE_ASSET]: (key: string, file: File | null) => {
             this._components_manager.show_loading_popup();
-            this.try_to_update_asset(key, file_list);
+            this.try_to_update_asset(key, file);
+        },
+        [ClickActions.UPDATE_ASSET_FROM_LINK]: (key: string, link: string) => {
+            this._components_manager.show_loading_popup();
+            this.try_to_update_asset_from_link(key, link);
         }
     };
 
@@ -242,37 +246,89 @@ export class AssetsManager{
     }
 
     /**
-     * Tries to update an asset in the active profile's cache with a new file.
-     * Displays appropriate messages if the file is not provided or is invalid.
+     * Checks if the asset update can proceed based on the provided link or file.
+     * Displays appropriate messages and returns false if conditions are not met.
      * 
-     * @param {string} key The key under which to update the asset.
-     * @param {FileList | null} file_list The list of files to update the asset with.
-     * @returns {void}
+     * @param {string | File | null} link_or_file The link or File object representing the asset to update.
+     * @returns {boolean} True if asset update can proceed; otherwise false.
      * @private
      */
-    private async try_to_update_asset(key: string, file_list: FileList | null){
-        if(!file_list){
-            this._components_manager.end_loading_popup(`Old asset preserved`);
-            return;
+    private can_asset_updated(link_or_file: string | File | null): boolean {
+
+        if(typeof link_or_file === 'string' && link_or_file === ""){
+            this._components_manager.end_loading_popup(`No link provided to update asset`);
+            return false;
         }
 
-        const file = file_list[0];
-        if(!file){
-            this._components_manager.end_loading_popup(`Old asset preserved`);
-            return;
+        if(link_or_file === null){
+            this._components_manager.end_loading_popup(`No file provided to update asset`);
+            return false;
         }
 
         if(this._profiles_manager.get_active_profile().is_default()){
             this._components_manager.end_loading_popup(`Assets on default profile can't be overriden`);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Updates an asset in the active profile's cache with the provided value.
+     * 
+     * @param {string} key The key under which to update the asset in the cache.
+     * @param {Response} value The Response object containing the asset data.
+     * @private
+     */
+    private async update_asset(key: string, value: Response) {
+        this._cache_manager.set_cache(Extenstions.profile_name_to_cache_name(this._profiles_manager.get_active_profile().get_profile_name()), key, value).then(() => {
+            this.set_active_profile(this._profiles_manager.get_active_profile().get_profile_name(), `Cache update sucesfully`);
+            // TO:DO change that logic, it's not necesarry to set profile again, it will be enough to change asset only 
+        });
+    }
+
+    /**
+     * Tries to update an asset in the active profile's cache with a new file fetched from a URL.
+     * Displays appropriate messages if the link is empty, fetch fails, or updating cache fails.
+     * 
+     * @param {string} key The key under which to update the asset in the cache.
+     * @param {string} link The URL from which to fetch the new asset.
+     * @private
+     */
+    private async try_to_update_asset_from_link(key: string, link: string){
+        if(!this.can_asset_updated(link)){
             return;
         }
 
+        try {
+            const response = await fetch(link);
+            if (!response.ok) {
+                this._components_manager.end_loading_popup(`Failed to fetch new asset`);
+                return;
+            }
+            
+            const blob = await response.blob();
+            this.update_asset(key, new Response(blob));
+            
+        } catch (error) {
+            this._components_manager.end_loading_popup(`Unexcepted error, can't updated assets`);
+        }
+    }
 
-        this._cache_manager.set_cache(Extenstions.profile_name_to_cache_name(this._profiles_manager.get_active_profile().get_profile_name()), key, new Response(file)).then(() => {
-            this.set_active_profile(this._profiles_manager.get_active_profile().get_profile_name(), `Cache update sucesfully`);
+    /**
+     * Tries to update an asset in the active profile's cache with a new file.
+     * Displays appropriate messages if the file is not provided or is invalid.
+     * 
+     * @param {string} key The key under which to update the asset in the cache.
+     * @param {File | null} file The file to update the asset with.
+     * @private
+     */
+    private async try_to_update_asset(key: string, file: File | null){
+        if(!this.can_asset_updated(file)){
+            return;
+        }
 
-            // TO:DO change that logic, it's not necesarry to set profile again, it will be enough to change asset only 
-        });
+        this.update_asset(key, new Response(file));
     }
     
     /**

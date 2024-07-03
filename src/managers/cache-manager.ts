@@ -165,6 +165,14 @@ export class CacheManager{
         });
     }
 
+    /**
+     * Stores or overrides sa response in the specified cache under the given key.
+     * 
+     * @param {string} cache_name The name of the cache where the response will be stored.
+     * @param {URL | RequestInfo} key The key under which to store the response.
+     * @param {Response} response The response to store in the cache.
+     * @returns {Promise<void>} A Promise that resolves when the response is successfully stored in the cache.
+     */
     async set_cache(cache_name: string, key: URL | RequestInfo, response: Response): Promise<void>{
         return new Promise<void>(async (resolve, reject) => {
             try{
