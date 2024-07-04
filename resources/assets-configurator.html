@@ -129,12 +129,21 @@
         }
 
         .assets-configurator-header {
-            width: 100%;
-            height: 20%;
+            width: calc(100% - 20px);
+            height: calc(20% - 20px);
+            margin: 10px;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-evenly;
+            border-radius: 4px;
+            background: #cd933a;
+        }
+
+        .profiles-section-container, .create-new-profile-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
         }
 
         .assets-container {
@@ -178,10 +187,11 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background: #004a57
         }
 
-        .asset img, .asset audio, .asset pre{
-            max-height: 100%;
+        .asset img, .asset audio, .asset pre {
+            max-height: 90%;
         }
 
         .assets-container::-webkit-scrollbar {
@@ -197,7 +207,6 @@
             background: #edff00;
             border-radius: 12px;
         }
-
 
     </style>
 </head>
@@ -218,10 +227,10 @@
             <div class="profiles-section-container">
                 <select id="profile-selector-section" class="profile-selector">
                 </select>
+                <div class="delete-profile-button basic-button">DELETE</div>
             </div>
 
             <div class="settings-and-filters-container">
-                <div class="delete-profile-button basic-button">DELETE</div>
                 <div class="create-new-profile-container">
                     <input type="text" id="new-profile-name-input" name="textInput" placeholder="Type new profile name...">
                     <div class="create-new-profile-button basic-button">CREATE</div>
