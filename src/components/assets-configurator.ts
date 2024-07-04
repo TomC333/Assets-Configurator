@@ -43,4 +43,14 @@ export class AssetsConfigurator {
         this._configurator_controll_panel.set_active_profile(profile);
         this._configurator_view.set_view(profile.get_cache_data());
     }
+
+    /**
+     * Deletes a profile from the configurator control panel.
+     * Delegates the deletion operation to an internal control panel instance.
+     * 
+     * @param profile The profile object to be deleted.
+     */
+    delete_profile(profile: Profile): void{
+        this._configurator_controll_panel.delete_profile(profile);
+    }
 }

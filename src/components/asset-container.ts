@@ -55,12 +55,12 @@ export class AssetContainer{
      */
     static create_asset_info_container(asset: CacheAsset): HTMLDivElement {
         const div = document.createElement('div');
-        const p = document.createElement('textarea');
+        const textarea = document.createElement('textarea');
 
-        p.classList.add('asset-key-container');
-        p.innerText = asset.key;
+        textarea.classList.add('asset-key-container');
+        textarea.innerText = asset.key;
 
-        div.appendChild(p);
+        div.appendChild(textarea);
 
         return div;
     }
@@ -75,6 +75,8 @@ export class AssetContainer{
      */
     static create_asset_settings_container(asset: CacheAsset, on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void): HTMLDivElement {
         const div = document.createElement('div');
+        const file_input_div = document.createElement('div');
+        const file_input_link_div = document.createElement('div');
         const file_input = document.createElement('input');
         const link_input = document.createElement('input');
         const link_update_button = document.createElement('div');
@@ -126,10 +128,17 @@ export class AssetContainer{
             link_input.value = '';
         });
 
-        div.appendChild(link_input);
-        div.appendChild(link_update_button);
-        div.appendChild(file_input);
-        div.appendChild(file_update_button);
+        file_input_div.classList.add('file-input-elements-container');
+        file_input_link_div.classList.add('file-input-elements-container');
+
+        file_input_div.appendChild(file_input);
+        file_input_div.appendChild(file_update_button);
+
+        file_input_link_div.appendChild(link_input);
+        file_input_link_div.appendChild(link_update_button);
+
+        div.appendChild(file_input_link_div);
+        div.appendChild(file_input_div);
 
         return div;
     }

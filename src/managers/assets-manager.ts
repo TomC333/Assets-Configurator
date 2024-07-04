@@ -241,7 +241,10 @@ export class AssetsManager{
         }
 
         this._cache_manager.delete_cache(profile_name).then(() => {
-            this.set_active_profile(Globals.DEFAULT_PROFILE_NAME, `Profile deleted sucesfully, switching to ${Globals.DEFAULT_PROFILE_NAME}  profile`);
+            this.set_active_profile(Globals.DEFAULT_PROFILE_NAME, `Profile deleted sucesfully, switching to ${Globals.DEFAULT_PROFILE_NAME} profile`);
+
+            this._components_manager.delete_profile(this._profiles_manager.get_profile(profile_name)!);
+            this._profiles_manager.delete_profile(profile_name);
         });
     }
 

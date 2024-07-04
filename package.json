@@ -1,7 +1,7 @@
 {
   "name": "assets-configurator",
   "description": "Package to facilitate communication between designers and developers",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

@@ -60,4 +60,14 @@ export class ComponentsManager{
     end_loading_popup(message: string): void{
         LoadingPopup.end_loading_animation(message);
     }
+
+    /**
+     * Deletes a profile from the assets configurator.
+     * Delegates the deletion operation to an internal assets configurator instance.
+     * 
+     * @param profile The profile object to be deleted.
+     */
+    delete_profile(profile: Profile): void{
+        this._assets_configurator.delete_profile(profile);
+    }
 }

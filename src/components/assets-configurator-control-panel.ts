@@ -4,14 +4,27 @@ import { ActionHandler } from "../utils/types";
 
 export class AssetsConfiguratorControllPanel {
 
-    private _profiles_container: HTMLDivElement = document.querySelector(".profiles-container") as HTMLDivElement;
+    private _profiles_selector: HTMLSelectElement = document.getElementById("profile-selector") as HTMLSelectElement;
 
     private _on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void;
     
     constructor(on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void) {
         this._on_click = on_click;
     
-        this.initButtonListeners();
+        this.init_button_listeners();
+        this.init_profiles_selector_listener();
+    }
+
+    /**
+     * Initializes an event listener for the profile selector dropdown to handle profile selection changes.
+     * Triggers _on_click with ClickActions.SWITCH_PROFILE when a new profile is selected.
+     */
+    private init_profiles_selector_listener(){
+        this._profiles_selector.addEventListener('change', (event) => {
+            const selected_profile = (event.target as HTMLSelectElement).value;
+
+            this._on_click(ClickActions.SWITCH_PROFILE, selected_profile);
+        });
     }
 
     /**
@@ -19,7 +32,7 @@ export class AssetsConfiguratorControllPanel {
      * - Handles events for creating a new profile and deleting a profile.
      * - Retrieves input data for creating a new profile.
      */
-    private initButtonListeners(): void {
+    private init_button_listeners(): void {
         const create_new_profile_button = document.querySelector(".create-new-profile-button") as HTMLDivElement;
         const delete_profile_button = document.querySelector(".delete-profile-button") as HTMLDivElement;
 
@@ -35,43 +48,22 @@ export class AssetsConfiguratorControllPanel {
     }
 
     /**
-     * Creates an HTMLDivElement representing an assets profile.
-     * @param profile The profile data used to create the element.
-     * @returns The created HTMLDivElement.
-     */
-    private create_assets_profile(profile: Profile): HTMLDivElement{
-        const div = document.createElement('div');
-
-        div.innerText = profile.get_profile_name();
-    
-        return div;
-    }
-
-
-    /**
      * Adds a new profile as an assets profile element to the profiles container.
-     * Sets up click event handling to activate the profile when clicked.
      * 
      * @param {Profile} profile The Profile object representing the profile to add.
      * @param {boolean} is_active Optional. Specifies if the profile should be initially active (default: false).
      */
     add_new_profile(profile: Profile, is_active: boolean = false): void{
-        const element = this.create_assets_profile(profile);
+        const new_option = document.createElement('option');
+        
+        new_option.value = profile.get_profile_name();
+        new_option.text = profile.get_profile_name();
 
-        element.classList.add("assets-profile");
+        this._profiles_selector.appendChild(new_option);
+
         if(is_active){
-            element.classList.add("active");
+            this._profiles_selector.value = new_option.value;
         }
-
-        element.addEventListener('click', () => {
-            if(!element.classList.contains("active")){
-                this._profiles_container.querySelectorAll(".assets-profile").forEach((y) => y.classList.remove("active"));
-                element.classList.add("active");
-                this._on_click(ClickActions.SWITCH_PROFILE, profile.get_profile_name());
-            }
-        });
-
-        this._profiles_container.appendChild(element);
     }
 
     /**
@@ -89,11 +81,20 @@ export class AssetsConfiguratorControllPanel {
      * @param profile The profile object containing the profile name to activate.
      */
     set_active_profile(profile: Profile): void{
-        this._profiles_container.querySelectorAll('.assets-profile').forEach((x) => {
-            x.classList.remove('active');
-            if(x.textContent === profile.get_profile_name()){
-                x.classList.add('active');
-            }
-        });   
+        this._profiles_selector.value = profile.get_profile_name();
+    }
+
+    /**
+     * Deletes a profile option from the profiles selector dropdown based on the profile object provided.
+     * If the profile option exists in the selector, it is removed; otherwise, the function does nothing.
+     * 
+     * @param profile The Profile object representing the profile to delete.
+     */
+    delete_profile(profile: Profile): void{
+        const option_to_delete = this._profiles_selector.querySelector(`option=[value=${profile.get_profile_name()}]`);
+
+        if(option_to_delete){
+            this._profiles_selector.removeChild(option_to_delete);
+        }
     }
 }

@@ -63,6 +63,15 @@ export class ProfilesManager{
     }
 
     /**
+     * Deletes a profile from the manager by its name.
+     * 
+     * @param profile_name The name of the profile to delete.
+     */
+    delete_profile(profile_name: string) {
+        this._profiles.delete(profile_name);
+    }
+
+    /**
      * Stores the active profile.
      * @param profile The profile object to store as active.
      */
