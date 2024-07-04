@@ -55,7 +55,7 @@ export class AssetContainer{
      */
     static create_asset_info_container(asset: CacheAsset): HTMLDivElement {
         const div = document.createElement('div');
-        const p = document.createElement('p');
+        const p = document.createElement('textarea');
 
         p.classList.add('asset-key-container');
         p.innerText = asset.key;
