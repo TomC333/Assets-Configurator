@@ -26,7 +26,7 @@ self.addEventListener('fetch', event => {
                 if (event.request.url.match(/\.(png|jpg|jpeg|gif|bmp|webp)$/i) || event.request.url.match(/\.(mp4|webm|ogg)$/i) || event.request.url.match(/\.(mp3|wav|ogg)$/i) || event.request.url.endsWith('.json')) {
                   cache.put(event.request, response_clone); 
                 }
-              });
+              }); 
               return network_response;
             }).catch(error => {
               console.error("Fetch error:", error);

@@ -58,13 +58,14 @@ export class ComponentsManager{
      * @param message The message to display when loading ends.
      */
     end_loading_popup(message: string): void{
-        LoadingPopup.end_loading_animation(message);
+        // Just to see animation xDDDD nothing more xDD
+        setTimeout(() => {
+            LoadingPopup.end_loading_animation(message);
+        }, 1000);
     }
 
     /**
      * Deletes a profile from the assets configurator.
-     * Delegates the deletion operation to an internal assets configurator instance.
-     * 
      * @param profile The profile object to be deleted.
      */
     delete_profile(profile: Profile): void{

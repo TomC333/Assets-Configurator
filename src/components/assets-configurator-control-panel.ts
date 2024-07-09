@@ -29,12 +29,13 @@ export class AssetsConfiguratorControllPanel {
 
     /**
      * Initializes event listeners for buttons in the control panel.
-     * - Handles events for creating a new profile and deleting a profile.
+     * - Handles events for creating a new profile, deleting a profile and downloading cache data.
      * - Retrieves input data for creating a new profile.
      */
     private init_button_listeners(): void {
         const create_new_profile_button = document.querySelector(".create-new-profile-button") as HTMLDivElement;
         const delete_profile_button = document.querySelector(".delete-profile-button") as HTMLDivElement;
+        const download_button = document.querySelector(".download-button") as HTMLDivElement;
 
         const new_profile_name_input = document.getElementById("new-profile-name-input") as HTMLInputElement;
 
@@ -45,11 +46,14 @@ export class AssetsConfiguratorControllPanel {
         delete_profile_button.addEventListener("click", () => {
             this._on_click(ClickActions.DELETE_PROFILE);
         });
+
+        download_button.addEventListener("click", () => {
+            this._on_click(ClickActions.DOWNLOAD_ASSETS);
+        })
     }
 
     /**
      * Adds a new profile as an assets profile element to the profiles container.
-     * 
      * @param {Profile} profile The Profile object representing the profile to add.
      * @param {boolean} is_active Optional. Specifies if the profile should be initially active (default: false).
      */
@@ -87,7 +91,6 @@ export class AssetsConfiguratorControllPanel {
     /**
      * Deletes a profile option from the profiles selector dropdown based on the profile object provided.
      * If the profile option exists in the selector, it is removed; otherwise, the function does nothing.
-     * 
      * @param profile The Profile object representing the profile to delete.
      */
     delete_profile(profile: Profile): void{

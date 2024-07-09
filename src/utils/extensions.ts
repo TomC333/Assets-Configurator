@@ -5,7 +5,7 @@ import { Globals } from "./globals";
  */
 export class Extenstions{
     /**
-     * Generates a cache name by combining the provided `cacheName` with default prefix and suffix.
+     * Generates a cache name by combining the provided `cache_name` with default prefix and suffix.
      * @param cache_name The base name to be used in generating the cache name.
      * @returns The generated cache name with default prefix and suffix.
      */

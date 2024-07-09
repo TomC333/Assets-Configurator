@@ -19,12 +19,6 @@ export class ServiceWorkerManager {
                     await existing_registration.unregister();
                 }
 
-                const existing_registration2 = await navigator.serviceWorker.getRegistration("/");
-                
-                if (existing_registration2) {
-                    await existing_registration2.unregister();
-                }
-
                 await navigator.serviceWorker.register(service_worker_request_url, { scope: "/" });
             } else {
                 console.warn("Service workers are not supported");

@@ -1,3 +1,4 @@
+import { text } from "stream/consumers";
 import { CacheTypes, ClickActions } from "../utils/enums";
 import { ActionHandler, CacheAsset } from "../utils/types";
 
@@ -48,15 +49,15 @@ export class AssetContainer{
 
     /**
      * Creates a container for displaying asset key information.
-     * 
      * @param {CacheAsset} asset The asset object containing key information.
      * @returns {HTMLDivElement} The created div element containing the asset key.
      * @static
      */
-    static create_asset_info_container(asset: CacheAsset): HTMLDivElement {
+    private static create_asset_info_container(asset: CacheAsset): HTMLDivElement {
         const div = document.createElement('div');
         const textarea = document.createElement('textarea');
 
+        textarea.readOnly = true;
         textarea.classList.add('asset-key-container');
         textarea.innerText = asset.key;
 
@@ -67,13 +68,12 @@ export class AssetContainer{
 
     /**
      * Creates a container for managing asset settings, including file upload and link input.
-     * 
      * @param {CacheAsset} asset The asset object to manage settings for.
      * @param {function} on_click The click handler function to invoke on update actions.
      * @returns {HTMLDivElement} The created div element containing asset settings controls.
      * @static
      */
-    static create_asset_settings_container(asset: CacheAsset, on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void): HTMLDivElement {
+    private static create_asset_settings_container(asset: CacheAsset, on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void): HTMLDivElement {
         const div = document.createElement('div');
         const file_input_div = document.createElement('div');
         const file_input_link_div = document.createElement('div');
@@ -145,7 +145,6 @@ export class AssetContainer{
 
     /**
     * Creates a container to display an asset with its information, settings, and visual representation.
-    * 
     * @param {CacheAsset} asset The asset object containing key and value information.
     * @param {function} on_click The click handler function to invoke on update actions.
     * @returns {HTMLDivElement} The created div element containing the asset container.

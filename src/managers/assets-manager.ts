@@ -26,9 +26,9 @@ export class AssetsManager{
             this._components_manager.show_loading_popup();
             this.try_to_switch_profile(profile_name);
         },
-        [ClickActions.DELETE_PROFILE]: (profile_name) => {
+        [ClickActions.DELETE_PROFILE]: () => {
             this._components_manager.show_loading_popup();
-            this.try_to_delete_profile(profile_name);
+            this.try_to_delete_profile(this._profiles_manager.get_active_profile().get_profile_name());
         },
         [ClickActions.UPDATE_ASSET]: (key: string, file: File | null) => {
             this._components_manager.show_loading_popup();
@@ -37,6 +37,10 @@ export class AssetsManager{
         [ClickActions.UPDATE_ASSET_FROM_LINK]: (key: string, link: string) => {
             this._components_manager.show_loading_popup();
             this.try_to_update_asset_from_link(key, link);
+        },
+        [ClickActions.DOWNLOAD_ASSETS]: () => {
+            this._components_manager.show_loading_popup();
+            this.try_to_download_assets(Extenstions.profile_name_to_cache_name(this._profiles_manager.get_active_profile().get_profile_name()))
         }
     };
 
@@ -183,7 +187,6 @@ export class AssetsManager{
      * If successful, sets the active profile and displays a success message.
      * If the profile name is empty, displays an error message.
      * If a profile with the same name already exists, displays an error message.
-     * 
      * @param {string} profile_name The name of the profile to create.
      */
     private try_to_create_profile(profile_name: string): void {
@@ -209,7 +212,6 @@ export class AssetsManager{
      * Tries to switch to the profile with the given name.
      * If the profile exists, sets it as the active profile and displays a success message.
      * If the profile does not exist, displays an error message.
-     * 
      * @param {string} profile_name The name of the profile to switch to.
      */
     private try_to_switch_profile(profile_name: string): void {
@@ -224,7 +226,6 @@ export class AssetsManager{
     /**
      * Tries to delete a profile from the cache and sets a new active profile if successful.
      * Displays appropriate messages if the profile does not exist or is not deletable.
-     * 
      * @param {string} profile_name The name of the profile to delete.
      * @returns {void}
      * @private
@@ -251,7 +252,6 @@ export class AssetsManager{
     /**
      * Checks if the asset update can proceed based on the provided link or file.
      * Displays appropriate messages and returns false if conditions are not met.
-     * 
      * @param {string | File | null} link_or_file The link or File object representing the asset to update.
      * @returns {boolean} True if asset update can proceed; otherwise false.
      * @private
@@ -278,7 +278,6 @@ export class AssetsManager{
 
     /**
      * Updates an asset in the active profile's cache with the provided value.
-     * 
      * @param {string} key The key under which to update the asset in the cache.
      * @param {Response} value The Response object containing the asset data.
      * @private
@@ -293,7 +292,6 @@ export class AssetsManager{
     /**
      * Tries to update an asset in the active profile's cache with a new file fetched from a URL.
      * Displays appropriate messages if the link is empty, fetch fails, or updating cache fails.
-     * 
      * @param {string} key The key under which to update the asset in the cache.
      * @param {string} link The URL from which to fetch the new asset.
      * @private
@@ -321,7 +319,6 @@ export class AssetsManager{
     /**
      * Tries to update an asset in the active profile's cache with a new file.
      * Displays appropriate messages if the file is not provided or is invalid.
-     * 
      * @param {string} key The key under which to update the asset in the cache.
      * @param {File | null} file The file to update the asset with.
      * @private
@@ -334,10 +331,22 @@ export class AssetsManager{
         this.update_asset(key, new Response(file));
     }
     
+
+    /**
+     * Tries to download all assets from the specified cache as a ZIP file.
+     * Initiates a download and displays a loading popup during the download process.
+     * @param {string} cache_name The name of the cache to download assets from.
+     */
+    private async try_to_download_assets(cache_name: string) {
+        await this._cache_manager.download_cache(cache_name).then(() => {
+            this._components_manager.end_loading_popup('Downloading started');
+        })
+    }
+
+
     /**
      * Executes the appropriate handler function for a given action based on ClickActions enum.
      * Throws an error if the action is not handled.
-     * 
      * @param {ClickActions} action The action to perform, represented by a value from the ClickActions enum.
      * @param {...any} args Arguments to pass to the handler function associated with the action.
      * @logs an error if the action is not handled by any registered handler.

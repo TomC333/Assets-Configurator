@@ -11,4 +11,5 @@ export enum ClickActions {
     DELETE_PROFILE,
     UPDATE_ASSET,
     UPDATE_ASSET_FROM_LINK,
+    DOWNLOAD_ASSETS,
 }

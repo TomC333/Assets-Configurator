@@ -45,7 +45,7 @@ export class ProfilesManager{
     }
 
     /**
-     * Checks if a profile with the given profilName exists in the ProfilesManager.e
+     * Checks if a profile with the given profile_name exists in the ProfilesManager
      * @param profile_name The name of the profile to check for existence.
      * @returns `true` if the profile exists in the manager, otherwise `false`.
      */
@@ -55,7 +55,6 @@ export class ProfilesManager{
 
     /**
      * Adds a new profile with the given name to the collection of profiles.
-     * 
      * @param {string} profile_name The name of the profile to add.
      */
     add_profile(profile_name: string) {
@@ -64,7 +63,6 @@ export class ProfilesManager{
 
     /**
      * Deletes a profile from the manager by its name.
-     * 
      * @param profile_name The name of the profile to delete.
      */
     delete_profile(profile_name: string) {

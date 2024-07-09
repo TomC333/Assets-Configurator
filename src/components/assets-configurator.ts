@@ -20,7 +20,6 @@ export class AssetsConfigurator {
     
     /**
      * Adds a new profile to the configurator control panel.
-     * 
      * @param {Profile} profile The Profile object representing the new profile to add.
      */
     add_new_profile(profile: Profile): void{

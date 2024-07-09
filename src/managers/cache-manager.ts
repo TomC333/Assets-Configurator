@@ -1,4 +1,9 @@
+import { rejects } from "assert";
 import { CacheTypes } from "../utils/enums";
+
+import JSZip, { folder } from 'jszip';
+import { create } from "domain";
+import { Globals } from "../utils/globals";
 
 export class CacheManager{
 
@@ -30,7 +35,6 @@ export class CacheManager{
     /**
      * Retrieves unique key-value pairs from specified caches.
      * Keys existing in both caches will have their value taken from the second cache.
-     * 
      * @param default_cache The name of the default cache.
      * @param override_cache The name of the override cache.
      * @returns A promise that resolves with an array of unique key-value pairs from both caches.     
@@ -111,7 +115,6 @@ export class CacheManager{
 
     /**
      * Creates a new cache entry with the specified cache name.
-     * 
      * @param {string} cache_name The name of the cache to create.
      * @returns {Promise<void>} A Promise that resolves when the cache entry is successfully created.
      */
@@ -128,7 +131,6 @@ export class CacheManager{
 
     /**
      * Deletes a cache entry with the specified name.
-     * 
      * @param {string} cache_name The name of the cache to delete.
      * @returns {Promise<void>} A Promise that resolves when the cache entry is successfully deleted.
      */
@@ -150,7 +152,6 @@ export class CacheManager{
 
     /**
      * Checks if a cache entry with the specified name exists.
-     * 
      * @param {string} cache_name The name of the cache to check.
      * @returns {Promise<boolean>} A Promise that resolves to true if the cache exists, false otherwise.
      */
@@ -167,7 +168,6 @@ export class CacheManager{
 
     /**
      * Stores or overrides sa response in the specified cache under the given key.
-     * 
      * @param {string} cache_name The name of the cache where the response will be stored.
      * @param {URL | RequestInfo} key The key under which to store the response.
      * @param {Response} response The response to store in the cache.
@@ -176,6 +176,10 @@ export class CacheManager{
     async set_cache(cache_name: string, key: URL | RequestInfo, response: Response): Promise<void>{
         return new Promise<void>(async (resolve, reject) => {
             try{
+                if(cache_name === Globals.DEFAULT_CACHE_NAME){
+                    reject('Default cache cant be updated');
+                }
+
                 caches.open(cache_name).then((cache) => {
                     cache.put(key, response).then(() => resolve());
                 })
@@ -183,5 +187,66 @@ export class CacheManager{
                 reject(error);
             }
         });
+    }
+
+    /**
+     * Downloads the contents of the specified cache as a ZIP file.
+     * Each cached response is stored in the ZIP file under its respective folder and file name.
+     * @param {string} cache_name The name of the cache to download.
+     * @returns {Promise<void>} A Promise that resolves when the cache has been successfully downloaded.
+     */
+    async download_cache(cache_name: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            const zip = new JSZip();
+            const created_folders = new Map<string, JSZip>();
+
+            try{
+
+                const cache = await caches.open(cache_name);
+                const requests = await cache.keys();
+
+                await Promise.all(requests.map(async (request) => {
+                    const response = await cache.match(request);
+
+                    if(response){
+                        const url = new URL(request.url);
+                        const file_path = url.pathname;
+                        const folders = file_path.split(/\/{1,2}/);
+
+                        let current_folder = zip;
+
+                        for(let i = 0; i < folders.length - 1; i++){
+                            const folder_name = folders[i];
+
+                            if(!created_folders.has(folder_name)){
+                                created_folders.set(folder_name, current_folder.folder(folder_name)!);
+                            }
+
+                            current_folder = created_folders.get(folder_name)!;
+                        }
+
+                        const file_blob = await response.blob();
+                        current_folder.file(folders[folders.length - 1], file_blob);
+                    }
+                }));
+
+                const zip_content = await zip.generateAsync({type: 'blob'});
+
+                const download_link = document.createElement('a');
+
+                download_link.href = URL.createObjectURL(zip_content);
+                download_link.download = `${cache_name}.zip`;
+                download_link.style.display = 'none';
+
+                document.body.appendChild(download_link);
+                download_link.click();
+                document.body.removeChild(download_link);
+
+                resolve();
+
+            }catch(error){
+                reject(error);
+            }
+        })
     }
 }
