@@ -15,9 +15,17 @@ export class AssetsConfigurator {
         this._on_click = on_click;
 
         this._configurator_view = new AssetsConfiguratorView(on_click);
-        this._configurator_controll_panel = new AssetsConfiguratorControllPanel(on_click);
+        this._configurator_controll_panel = new AssetsConfiguratorControllPanel(on_click, this.on_filter_click.bind(this));
     }
     
+    /**
+     * Applies a filter to the configurator view to display assets accordingly.
+     * @param filter A string representing the filter to apply.
+     */
+    private on_filter_click(filter: string): void {
+        this._configurator_view.filter(filter);
+    }
+
     /**
      * Adds a new profile to the configurator control panel.
      * @param {Profile} profile The Profile object representing the new profile to add.
@@ -51,5 +59,13 @@ export class AssetsConfigurator {
      */
     delete_profile(profile: Profile): void{
         this._configurator_controll_panel.delete_profile(profile);
+    }
+
+    /**
+     * Sets the filters for assets and updates the configurator control panel accordingly.
+     * @param filters An array of strings representing the filters to apply.
+     */
+    set_filters(filters: string[]): void{
+        this._configurator_controll_panel.set_filters(filters);
     }
 }

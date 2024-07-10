@@ -1,7 +1,8 @@
+import { filter } from "jszip";
 import { ClickActions } from "../utils/enums";
 import { Extenstions } from "../utils/extensions";
 import { Globals} from "../utils/globals";
-import { ActionHandler } from "../utils/types";
+import { ActionHandler, CacheAsset } from "../utils/types";
 import { CacheManager } from "./cache-manager";
 import { ComponentsManager } from "./components-manager";
 import { LocalStorageManager } from "./local-storage-manager";
@@ -177,8 +178,15 @@ export class AssetsManager{
      */
     private set_active_profile_to_components(profile_name: string, cache_name: string): void{
         this._cache_manager.get_unique_cache_key_value_pairs(Globals.DEFAULT_CACHE_NAME, cache_name).then(result => {
-            this._profiles_manager.get_profile(profile_name)?.set_cache_data(result);
+            const cache_assets: CacheAsset[] = result;
+            const filters = [...cache_assets].map(x => x.key);
+
+            cache_assets.forEach(x => x.key = x.key.replace(/\/+/g, '/'));
+            filters.forEach((x, index) => filters[index] = x.replace(/\/+/g, '/'));
+
+            this._profiles_manager.get_profile(profile_name)?.set_cache_data(cache_assets);
             this._components_manager.set_active_profile(this._profiles_manager.get_profile(profile_name)!);
+            this._components_manager.set_filters(Extenstions.get_unique_subdirecotires(filters));
         });
     }
 
@@ -236,7 +244,7 @@ export class AssetsManager{
             return;
         }
 
-        if(this._profiles_manager.get_profile(profile_name)?.is_deletable){
+        if(this._profiles_manager.get_profile(profile_name)?.is_deletable()){
             this._components_manager.end_loading_popup(`That profile is not deletable`)
             return;
         }

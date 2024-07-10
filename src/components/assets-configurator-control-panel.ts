@@ -5,25 +5,35 @@ import { ActionHandler } from "../utils/types";
 export class AssetsConfiguratorControllPanel {
 
     private _profiles_selector: HTMLSelectElement = document.getElementById("profile-selector") as HTMLSelectElement;
+    private _assets_filter_selector: HTMLSelectElement = document.getElementById("assets-filter-selector") as HTMLSelectElement;
 
     private _on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void;
-    
-    constructor(on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void) {
+    private _on_filter_click: (filter: string) => void;
+
+    constructor(on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void, on_filter_click: (filter: string) => void) {
         this._on_click = on_click;
-    
+        this._on_filter_click = on_filter_click;
+
         this.init_button_listeners();
-        this.init_profiles_selector_listener();
+        this.init_selector_listeners();
     }
 
     /**
-     * Initializes an event listener for the profile selector dropdown to handle profile selection changes.
-     * Triggers _on_click with ClickActions.SWITCH_PROFILE when a new profile is selected.
+     * Initializes event listeners for selector elements in the control panel.
+     * - Listens for changes in the profiles selector and triggers actions accordingly.
+     * - Listens for changes in the assets filter selector and triggers filter actions.
      */
-    private init_profiles_selector_listener(){
+    private init_selector_listeners(){
         this._profiles_selector.addEventListener('change', (event) => {
             const selected_profile = (event.target as HTMLSelectElement).value;
 
             this._on_click(ClickActions.SWITCH_PROFILE, selected_profile);
+        });
+
+        this._assets_filter_selector.addEventListener('change', (event) => {
+            const selected_filter = (event.target as HTMLSelectElement).value;
+
+            this._on_filter_click(selected_filter);
         });
     }
 
@@ -100,4 +110,24 @@ export class AssetsConfiguratorControllPanel {
             this._profiles_selector.removeChild(option_to_delete);
         }
     }
-}
+
+
+    /**
+     * Sets the filters in the assets filter selector dropdown based on the provided array of filter strings.
+     * Clears existing options and adds new options for each filter in the array.
+     * @param filters An array of strings representing the filters to populate in the selector.
+     */
+    set_filters(filters: string[]): void{
+        this._assets_filter_selector.innerHTML = "";
+        this._assets_filter_selector.value = "";
+
+        filters.forEach(filter => {
+            const option = document.createElement('option');
+
+            option.value = filter;
+            option.text = filter;
+        
+            this._assets_filter_selector.appendChild(option);
+        });
+    }
+}   

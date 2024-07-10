@@ -45,6 +45,8 @@ export class LoadingPopup{
         
         this._loading_animation.classList.add("hidden");
         this._text_content_container.classList.remove("hidden");
+        this._close_button.classList.remove('hidden');
+
     }
 
     /**
@@ -56,5 +58,6 @@ export class LoadingPopup{
         this._loading_popup.classList.add("hidden");
         this._loading_animation.classList.add("hidden");
         this._text_content_container.classList.add("hidden");
+        this._close_button.classList.add('hidden');
     }
 }

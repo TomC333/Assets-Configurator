@@ -47,6 +47,14 @@ export class ComponentsManager{
     }
 
     /**
+     * Sets the filters for assets and updates the configurator accordingly.
+     * @param filters An array of strings representing the filters to apply.
+     */
+    set_filters(filters: string[]): void{
+        this._assets_configurator.set_filters(filters);
+    }
+
+    /**
      * Displays the loading popup with a loading animation.
      */
     show_loading_popup(): void{

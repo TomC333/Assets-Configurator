@@ -1,3 +1,4 @@
+import path from "path";
 import { Globals } from "./globals";
 
 /**
@@ -42,5 +43,33 @@ export class Extenstions{
      */
     static profile_name_to_cache_name(profile_name: string): string {
         return Globals.DEFAULT_CACHE_PREFIX + profile_name + Globals.DEFAULT_CACHE_SUFFIX;
+    }
+
+    /**
+     * Extracts the directory path from a file path string.
+     * @param filePath The file path from which to extract the directory path.
+     * @returns The directory path extracted from the file path.
+     */
+    static extract_directory(path: string): string {
+        const parts = path.split(/[\/\\]/);
+        const directory_path = parts.slice(0, -1).join('/');
+
+        return directory_path;
+    }
+
+    /**
+     * Retrieves unique subdirectories from a list of file paths.
+     * @param paths The list of file paths from which to extract unique subdirectories.
+     * @returns An array of unique subdirectories extracted from the file paths.
+     */
+    static get_unique_subdirecotires(paths: string[]): string[] {
+        const sub_directories: Set<string> = new Set();
+
+        paths.forEach(path => {
+            const directory = Extenstions.extract_directory(path);
+            sub_directories.add(directory);
+        });
+
+        return Array.from(sub_directories);
     }
 }

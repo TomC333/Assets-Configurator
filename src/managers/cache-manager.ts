@@ -1,8 +1,6 @@
-import { rejects } from "assert";
 import { CacheTypes } from "../utils/enums";
 
-import JSZip, { folder } from 'jszip';
-import { create } from "domain";
+import JSZip  from 'jszip';
 import { Globals } from "../utils/globals";
 
 export class CacheManager{

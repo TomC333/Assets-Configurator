@@ -38,6 +38,11 @@
                 cursor: pointer;
                 border-color: #ffffff71;
             }
+
+            .basic-button:hover{
+                filter: brightness(1.1);
+                cursor: pointer;
+            }
         }
 
         #loading-popup {
@@ -118,7 +123,7 @@
             margin: 0 auto;
         }
 
-        #loading-popup.hidden, .loading-animation-container.hidden, .loading-message-container.hidden {
+        #loading-popup.hidden, .loading-animation-container.hidden, .loading-message-container.hidden, .close-button.hidden,  .asset-container.hidden {
             display: none !important;
         }
 
@@ -171,6 +176,10 @@
             width: 10%;
         }
 
+        .asset-info textarea{
+            width: 100%;
+        }
+
         .asset-settings {
             width: 50%;
             display: flex;
@@ -208,6 +217,40 @@
             border-radius: 12px;
         }
 
+        .settings-and-filters-container, .profiles-select-container, .file-input-elements-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .file-input-elements-container{
+            background: #004a57;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .file-input-elements-container input{
+            width: 182px;
+        }
+
+        .settings-and-filters-container{
+            flex-direction: row;
+        }
+
+        .basic-button{
+            color: white;
+            padding: 5px;
+            background: cadetblue;
+            border-radius: 10px;
+            transition: 0.5s ease all;
+            margin: 5px;
+        }
+
+        .assets-filter-selector{
+            max-width: 200px;
+            margin: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -224,12 +267,12 @@
     <div class="assets-configurator-container">
         <div class="assets-configurator-header">
             <div class="profiles-select-container">
-                <select id="profile-selector" class="profile-selector">
-                </select>
+                <select id="profile-selector" class="profile-selector"></select>
                 <div class="delete-profile-button basic-button">DELETE</div>
             </div>
 
             <div class="settings-and-filters-container">
+                <select id="assets-filter-selector" class="assets-filter-selector"></select>                
                 <div class="create-new-profile-container">
                     <input type="text" id="new-profile-name-input" name="textInput" placeholder="Type new profile name...">
                     <div class="create-new-profile-button basic-button">CREATE</div>
