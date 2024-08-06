@@ -140,7 +140,7 @@ export class CacheManager{
                     await caches.delete(cache_name);
                     resolve();
                 } else {
-                    reject();
+                    resolve();
                 }
             } catch (error) {
                 reject(error);

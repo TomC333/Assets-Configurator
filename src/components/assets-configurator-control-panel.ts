@@ -104,7 +104,7 @@ export class AssetsConfiguratorControllPanel {
      * @param profile The Profile object representing the profile to delete.
      */
     delete_profile(profile: Profile): void{
-        const option_to_delete = this._profiles_selector.querySelector(`option=[value=${profile.get_profile_name()}]`);
+        const option_to_delete = this._profiles_selector.querySelector(`option[value=${profile.get_profile_name()}]`);
 
         if(option_to_delete){
             this._profiles_selector.removeChild(option_to_delete);

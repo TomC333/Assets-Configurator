@@ -181,9 +181,6 @@ export class AssetsManager{
             const cache_assets: CacheAsset[] = result;
             const filters = [...cache_assets].map(x => x.key);
 
-            cache_assets.forEach(x => x.key = x.key.replace(/\/+/g, '/'));
-            filters.forEach((x, index) => filters[index] = x.replace(/\/+/g, '/'));
-
             this._profiles_manager.get_profile(profile_name)?.set_cache_data(cache_assets);
             this._components_manager.set_active_profile(this._profiles_manager.get_profile(profile_name)!);
             this._components_manager.set_filters(Extenstions.get_unique_subdirecotires(filters));
@@ -244,12 +241,12 @@ export class AssetsManager{
             return;
         }
 
-        if(this._profiles_manager.get_profile(profile_name)?.is_deletable()){
+        if(!this._profiles_manager.get_profile(profile_name)?.is_deletable()){
             this._components_manager.end_loading_popup(`That profile is not deletable`)
             return;
         }
 
-        this._cache_manager.delete_cache(profile_name).then(() => {
+        this._cache_manager.delete_cache(Extenstions.profile_name_to_cache_name(profile_name)).then(() => {
             this.set_active_profile(Globals.DEFAULT_PROFILE_NAME, `Profile deleted sucesfully, switching to ${Globals.DEFAULT_PROFILE_NAME} profile`);
 
             this._components_manager.delete_profile(this._profiles_manager.get_profile(profile_name)!);
