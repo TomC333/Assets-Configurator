@@ -10,6 +10,7 @@ export class AssetsConfigurator {
     private _configurator_controll_panel: AssetsConfiguratorControllPanel;
 
     private _on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void;
+    private _last_filter!: string;    
 
     constructor(on_click: (action: ClickActions, ...args: Parameters<ActionHandler<any>>) => void){
         this._on_click = on_click;
@@ -24,6 +25,7 @@ export class AssetsConfigurator {
      */
     private on_filter_click(filter: string): void {
         this._configurator_view.filter(filter);
+        this._last_filter = filter;
     }
 
     /**
@@ -49,6 +51,10 @@ export class AssetsConfigurator {
     set_active_profile(profile: Profile): void{
         this._configurator_controll_panel.set_active_profile(profile);
         this._configurator_view.set_view(profile.get_cache_data());
+
+        if(this._last_filter){
+            this.on_filter_click(this._last_filter);
+        }
     }
 
     /**

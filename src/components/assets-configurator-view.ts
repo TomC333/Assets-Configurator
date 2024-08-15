@@ -1,4 +1,3 @@
-import { text } from "stream/consumers";
 import { ClickActions } from "../utils/enums";
 import { ActionHandler, CacheAsset } from "../utils/types";
 import { AssetContainer } from "./asset-container";
@@ -37,7 +36,7 @@ export class AssetsConfiguratorView{
 
         assets.forEach(element => {
             const text_area: HTMLTextAreaElement = element.querySelector('.asset-info textarea') as HTMLTextAreaElement;
-            const key_value = text_area.innerText;
+            const key_value = text_area.innerHTML;
 
             if(key_value.startsWith(filter)){
                 element.classList.remove('hidden');

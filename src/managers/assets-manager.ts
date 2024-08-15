@@ -175,6 +175,8 @@ export class AssetsManager{
      * Retrieves key-value pairs from the specified cache and updates the assets view accordingly.
      * @param profile_name The name of the profile which should become active.
      * @param cache_name The name of the cache from which key-value pairs are retrieved.
+     * 
+     * Note: this._components_manager.set_filters([...Extenstions.get_unique_subdirecotires(filters), 'http']); inserting http manually to retrieve all files from base path
      */
     private set_active_profile_to_components(profile_name: string, cache_name: string): void{
         this._cache_manager.get_unique_cache_key_value_pairs(Globals.DEFAULT_CACHE_NAME, cache_name).then(result => {
@@ -183,7 +185,7 @@ export class AssetsManager{
 
             this._profiles_manager.get_profile(profile_name)?.set_cache_data(cache_assets);
             this._components_manager.set_active_profile(this._profiles_manager.get_profile(profile_name)!);
-            this._components_manager.set_filters(Extenstions.get_unique_subdirecotires(filters));
+            this._components_manager.set_filters([...Extenstions.get_unique_subdirecotires(filters), 'http']);
         });
     }
 
