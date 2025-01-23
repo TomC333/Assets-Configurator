@@ -82,6 +82,8 @@ npm i assets-configurator
 
 ### 📌 Add this HTML to your web page:
 
+Please create seperate route for this page...
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
